@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Kalavesi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,500&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+/* Layout: ylhäällä lupahaku (hakukenttä + tulokset ja valitun kohteen kortti), alla ilmakuvakartta.
+   Tarkoituksella yksi vaalea ilme: viileä usvanharmaa pohja, kuusenvihreä teksti, messinkikorostus. */
+:root{
+  color-scheme:light;
+  --bg:#eef2f0;          /* aamu-usva */
+  --paper:#fbfcfa;
+  --ink:#14302b;         /* kuusi */
+  --muted:#5b6f69;
+  --line:#d4ddd9;
+  --water:#2d6d72;       /* järvenselkä */
+  --water-soft:#dbe8e7;
+  --brass:#a8742a;       /* uistimen messinki */
+  --brass-soft:#f3e8d5;
+  --ok:#2e7a57; --ok-soft:#e1efe7;
+  --warn:#9a6a10; --warn-soft:#f6ebd2;
+  --stop:#b13f2b; --stop-soft:#f6e1dc;
+  --bobber:#c8412e;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:1120px;margin:0 auto}
+a{color:var(--water);text-underline-offset:2px}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+/* yläpalkki */
+.top{border-bottom:1px solid var(--line);background:var(--paper)}
+.top .inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:1.45rem;font-weight:600;color:var(--ink);text-decoration:none}
+.logo svg{width:30px;height:30px}
+.top nav{display:flex;gap:20px;font-size:.92rem}
+.top nav a{color:var(--muted);text-decoration:none}
+.top nav a:hover{color:var(--ink)}
+
+/* haku */
+.hero{position:relative;overflow:hidden}
+.contours{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .inner{position:relative;padding-block:56px 40px;display:grid;gap:22px}
+.eyebrow{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--water)}
+.hero h1{font-family:var(--f-display);font-weight:500;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.02;letter-spacing:-.015em;margin:0;max-width:16ch;text-wrap:balance}
+.hero h1 em{color:var(--brass)}
+.hero p.lede{margin:0;color:var(--muted);max-width:56ch;font-size:1.05rem}
+.searchbox{position:relative;max-width:720px}
+.searchbox input{width:100%;box-sizing:border-box;font-size:1.15rem;padding:18px 20px 18px 54px;border-radius:14px;border:1.5px solid var(--line);background:var(--paper);box-shadow:0 10px 30px rgba(20,48,43,.08)}
+.searchbox input:focus{border-color:var(--water);outline:none;box-shadow:0 0 0 4px var(--water-soft),0 10px 30px rgba(20,48,43,.08)}
+.searchbox svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:22px;height:22px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.85rem;color:var(--muted)}
+.chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chips button:hover{border-color:var(--water);color:var(--water)}
+
+.filters{display:flex;flex-wrap:wrap;gap:18px 28px}
+.filter{display:grid;gap:7px}
+.filter > span{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--paper);padding:7px 13px;border-radius:999px;cursor:pointer;font-size:.88rem}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* siima-jakaja */
+.line-divider{display:block;width:100%;height:auto}
+
+/* tulokset */
+.results .inner{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;padding-block:8px 48px;align-items:start}
+@media (max-width:820px){.results .inner{grid-template-columns:1fr}}
+.rlist{display:grid;gap:8px}
+.rlist .count{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 2px 4px}
+.ritem{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.ritem:hover{border-color:var(--water)}
+.ritem[aria-current="true"]{border-color:var(--ink);box-shadow:inset 3px 0 0 var(--brass)}
+.ritem .nm{font-weight:600}
+.ritem .sub{font-size:.8rem;color:var(--muted)}
+.dot{width:12px;height:12px;border-radius:50%}
+.bg-ok{background:var(--ok)} .bg-warn{background:var(--warn)} .bg-stop{background:var(--stop)}
+.st{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.ok-c{color:var(--ok);background:var(--ok-soft)} .warn-c{color:var(--warn);background:var(--warn-soft)} .stop-c{color:var(--stop);background:var(--stop-soft)}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:18px;color:var(--muted);font-size:.92rem}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:28px;display:grid;gap:22px;min-width:0}
+.card-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:end}
+.card h2{font-family:var(--f-display);font-weight:500;font-size:2.1rem;line-height:1.05;margin:4px 0 0;text-wrap:balance}
+.maplink{font-size:.88rem;background:none;border:0;color:var(--water);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.verdict{border-radius:14px;padding:18px 20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:start}
+.verdict svg{grid-row:span 2;width:34px;height:34px}
+.verdict.ok{background:var(--ok-soft)} .verdict.warn{background:var(--warn-soft)} .verdict.stop{background:var(--stop-soft)}
+.verdict .head{font-family:var(--f-display);font-size:1.35rem;font-weight:600;line-height:1.2}
+.verdict.ok .head{color:var(--ok)} .verdict.warn .head{color:var(--warn)} .verdict.stop .head{color:var(--stop)}
+.verdict ul{margin:0;padding-left:1.1em;display:grid;gap:3px;font-size:.95rem}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px}
+@media (max-width:600px){.grid2{grid-template-columns:1fr}.card{padding:20px}}
+.block{display:grid;gap:8px;align-content:start}
+.block h3{margin:0;display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.tag{font-size:.6rem;letter-spacing:.06em;padding:2px 7px;border-radius:999px}
+.tag.found{color:var(--ok);background:var(--ok-soft)} .tag.missing{color:var(--warn);background:var(--warn-soft)}
+.block p{margin:0;font-size:.95rem}
+dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:5px 16px;margin:0;font-size:.95rem}
+dt{color:var(--muted)} dd{margin:0}
+.sources{border-top:1px solid var(--line);padding-top:16px;font-size:.84rem;color:var(--muted);display:grid;gap:4px}
+
+/* kartta */
+.mapsec{background:var(--paper);border-top:1px solid var(--line)}
+.mapsec .inner{padding-block:40px;display:grid;gap:16px}
+.mapsec h2{font-family:var(--f-display);font-weight:500;font-size:1.9rem;margin:0}
+.maphead{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.85rem;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.mapwrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+#map{height:min(560px,70vh);min-height:340px;background:#cfdcda}
+.leaflet-container{font-family:var(--f-body)}
+.layers{position:absolute;z-index:500;top:12px;right:12px;display:flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.layers button{border:0;background:none;padding:6px 13px;border-radius:999px;cursor:pointer;font-size:.82rem;color:var(--muted)}
+.layers button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tilenote{position:absolute;z-index:450;left:12px;bottom:12px;max-width:320px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.84rem;color:var(--muted)}
+.pin{position:relative;width:18px;height:18px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.45)}
+.pin.sel{width:24px;height:24px;margin:-3px 0 0 -3px;box-shadow:0 0 0 3px var(--brass),0 4px 14px rgba(0,0,0,.5)}
+.pin-label{position:absolute;left:26px;top:50%;transform:translateY(-50%);white-space:nowrap;font:600 12.5px/1 var(--f-body);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.6)}
+
+footer{padding-block:28px 40px;font-size:.84rem;color:var(--muted)}
+footer .inner{display:grid;gap:6px;max-width:1120px}
+footer p{margin:0;max-width:80ch}
+@media (max-width:560px){.top nav{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<header class="top gutter">
+  <div class="inner">
+    <a class="logo" href="#haku" aria-label="Kalavesi">
+      <!-- perho -->
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M27 9 C 27 22, 26 30, 19 32 C 13 34, 11 29, 14 27" fill="none" stroke="#14302b" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="27" cy="7.5" r="2" fill="none" stroke="#14302b" stroke-width="1.8"/>
+        <path d="M26 12 C 18 9, 10 11, 6 17 C 13 16, 20 16, 26 17 Z" fill="#a8742a"/>
+        <path d="M26 15 C 19 15, 12 19, 9 24 C 15 21, 21 20, 26 19 Z" fill="#2d6d72" opacity=".85"/>
+        <path d="M24 11.5 l3.5 0 l0 7 l-3.5 0 Z" fill="#c8412e"/>
+      </svg>
+      Kalavesi
+    </a>
+    <nav><a href="#haku">Lupahaku</a><a href="#kartta">Kartta</a><a href="#tietoa">Tietoa</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero gutter" id="haku">
+    <svg class="contours" id="contours" aria-hidden="true" preserveAspectRatio="xMidYMid slice"></svg>
+    <div class="inner">
+      <span class="eyebrow">Lupahaku · pilottialue Aurajoen vesistö</span>
+      <h1>Mistä saan <em>kalastusluvan?</em></h1>
+      <p class="lede">Kirjoita joen, kosken tai järven nimi. Näet heti, riittääkö kalastonhoitomaksu, mistä lupa ostetaan ja mitä rauhoituksia paikalla on.</p>
+      <div class="searchbox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="q" class="eyebrow" hidden>Hae kohdetta</label>
+        <input id="q" type="search" placeholder="Esim. Halistenkoski" autocomplete="off" aria-label="Hae kohdetta nimellä">
+      </div>
+      <div class="chips" id="chips"><span>Kokeile:</span></div>
+      <div class="filters">
+        <div class="filter"><span>Kalastustapa</span>
+          <div class="seg" id="methods">
+            <button data-m="onki">Onki tai pilkki</button>
+            <button data-m="viehe" aria-pressed="true">Heitto, uistin tai perho</button>
+            <button data-m="useampi">Useampi vapa</button>
+            <button data-m="pyydys">Verkko tai pyydys</button>
+          </div></div>
+        <div class="filter"><span>Ikä</span>
+          <div class="seg" id="ages">
+            <button data-a="adult" aria-pressed="true">18–64 v</button>
+            <button data-a="other">Alle 18 tai 65+</button>
+          </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- siima ja koho -->
+  <div class="gutter"><div class="inner">
+  <svg class="line-divider" viewBox="0 0 1120 46" aria-hidden="true">
+    <path d="M0 10 C 280 26, 640 2, 1040 22" fill="none" stroke="#5b6f69" stroke-width="1"/>
+    <line x1="1040" y1="22" x2="1040" y2="12" stroke="#5b6f69" stroke-width="1.2"/>
+    <path d="M1040 12 C 1048 16, 1048 22, 1040 22 C 1032 22, 1032 16, 1040 12 Z" fill="#c8412e"/>
+    <path d="M1040 22 C 1048 22, 1048 30, 1040 38 C 1032 30, 1032 22, 1040 22 Z" fill="#fbfcfa" stroke="#5b6f69" stroke-width="1"/>
+    <path d="M1016 30 q 24 -6 48 0" fill="none" stroke="#8fb0ae" stroke-width="1"/>
+    <path d="M1006 36 q 34 -7 68 0" fill="none" stroke="#8fb0ae" stroke-width=".8" opacity=".7"/>
+  </svg></div></div>
+
+  <section class="results gutter" aria-label="Hakutulokset">
+    <div class="inner">
+      <div class="rlist" id="rlist"></div>
+      <article class="card" id="card" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <section class="mapsec gutter" id="kartta">
+    <div class="inner">
+      <div class="maphead">
+        <div><span class="eyebrow">Kartta</span><h2>Kohteet ilmakuvassa</h2></div>
+        <div class="legend">
+          <span><i class="dot bg-ok"></i>Kalastonhoitomaksu riittää</span>
+          <span><i class="dot bg-warn"></i>Tarvitaan lupa</span>
+          <span><i class="dot bg-stop"></i>Ei sallittu</span>
+        </div>
+      </div>
+      <div class="mapwrap">
+        <div id="map" aria-label="Ilmakuvakartta kohteista"></div>
+        <div class="layers" role="group" aria-label="Karttataso">
+          <button id="l-sat" aria-pressed="true">Ilmakuva</button>
+          <button id="l-map" aria-pressed="false">Kartta</button>
+        </div>
+        <div class="tilenote" id="tilenote" hidden>Karttakuva ei lataudu tässä esikatselussa. Avaa sivu selaimessa, niin ilmakuva näkyy.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter" id="tietoa">
+  <div class="inner">
+    <p>Kalavesi kokoaa julkisesti saatavat lupa- ja rajoitustiedot yhteen paikkaan. Jokaisen tiedon kohdalla on lähde ja tarkistuspäivä. Tarkista ehdot aina myyjältä ja <a href="https://kalastusrajoitus.fi/#/kalastusrajoitus" target="_blank" rel="noopener">Kalastusrajoitus.fi</a>:stä ennen kalastamista.</p>
+    <p>Sijainnit ovat likimääräisiä. Karttojen lähteet näkyvät kartan oikeassa alakulmassa.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+/* Sama rakenne, jonka Python-skripti tuottaa (sites.json). */
+/* ASETUKSET
+   MML_API_KEY: Maanmittauslaitoksen maksuton API-avain (omatili.maanmittauslaitos.fi).
+   Kun avain on asetettu, kartta käyttää MML:n ortoilmakuvaa ja taustakarttaa. */
+const MML_API_KEY="";
+
+/* Data ladataan tiedostosta data/sites.json. Alla oleva kopio on varalla, jos sivu avataan suoraan tiedostona. */
+let DATA={"checked":"2026-10-19","sites":[
+ {"id":"aurajoki-turku","name":"Aurajoki, Turun keskusta","aliases":["aurajoki","aura","turku","tuomiokirkko"],"kind":"Hidas virta-alue","municipality":"Turku","lat":60.4503,"lon":22.2745,
+  "rapids":false,"nets_banned":true,"permits":[],
+  "closures":[{"text":"Lohikalojen rauhoitus 1.10.–30.11. Halistenkosken ja meren välillä. Rauhoitusaikana saadut lohikalat vapautetaan.","source":0}],
+  "sources":[{"title":"Aurajokisäätiö: Kalastus Aurajoella","url":"https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"}]},
+ {"id":"halistenkoski","name":"Halistenkoski","aliases":["halinen","halisten koski","aurajoki"],"kind":"Koskialue","municipality":"Turku","lat":60.4646,"lon":22.3050,
+  "rapids":true,"nets_banned":true,
+  "permits":[{"product":"Halistenkosken virkistyskalastusalue","seller":"Kalakortti.com","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp","price":null,"source":1}],
+  "closures":[{"text":"Kohde on rauhoitettu 1.10.–30.11.","source":1}],
+  "sources":[{"title":"Aurajokisäätiö: Kalastus Aurajoella","url":"https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"},{"title":"Kalakortti.com: virtavesien viehekalastusluvat","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"}]},
+ {"id":"nautelankoski","name":"Nautelankoski","aliases":["nautela","lieto","aurajoki","perho"],"kind":"Koskialue · perhokalastus","municipality":"Lieto","lat":60.5588,"lon":22.4387,
+  "rapids":true,"nets_banned":true,
+  "permits":[{"product":"Nautelankosken perhokalastusalue","seller":"Kalakortti.com","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp","price":null,"source":1}],
+  "closures":[{"text":"Lohikalojen syysrauhoitus 1.9.–30.11. Rauhoitusaikana saadut lohikalat vapautetaan.","source":0}],
+  "sources":[{"title":"Aurajokisäätiö: Kalastus Aurajoella","url":"https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"},{"title":"Kalakortti.com: virtavesien viehekalastusluvat","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"}]},
+ {"id":"paattistenjoki","name":"Paattistenjoki","aliases":["paattinen","auvainen"],"kind":"Sivujoki","municipality":"Turku, Paattinen","lat":60.5736,"lon":22.3512,
+  "rapids":false,"nets_banned":false,"permits":[],"closures":[],"sources":[]}
+]};
+let SITES=DATA.sites;
+const METHODS={onki:"Onki tai pilkki",viehe:"Heitto, uistin tai perho",useampi:"Useampi vapa",pyydys:"Verkko tai pyydys"};
+let method="viehe", adult=true, cur="halistenkoski", query="";
+
+function verdict(s){
+  if(s.nets_banned && method==="pyydys")
+    return {c:"stop",h:"Verkkokalastus on kielletty",l:"Kielletty",i:["Verkkokalastus on kielletty koko joessa."]};
+  if(s.rapids){
+    const p=s.permits[0];
+    if(p) return {c:"warn",h:"Tarvitset kohdeluvan",l:"Kohdelupa",
+      i:[`Osta ${p.product} (${p.seller}).`, adult?"Lisäksi valtion kalastonhoitomaksu.":"Kalastonhoitomaksua ei tarvita.","Yleiskalastusoikeus ei ole voimassa koski- ja virta-alueilla."]};
+    return {c:"stop",h:"Ei yleiskalastusoikeutta",l:"Ei sallittu",i:["Koski- ja virta-alueilla tarvitaan vesialueen omistajan lupa."]};
+  }
+  if(method==="onki") return {c:"ok",h:"Maksuton",l:"Maksuton",i:["Onginta ja pilkintä ovat jokamiehenoikeuksia koski- ja virta-alueiden ulkopuolella."]};
+  if(method==="viehe") return {c:"ok",h:adult?"Kalastonhoitomaksu riittää":"Ei maksuja",l:adult?"Maksu riittää":"Maksuton",
+      i:[adult?"Kalastonhoitomaksulla saa kalastaa yhdellä vavalla ja vieheellä.":"Alle 18- ja 65 vuotta täyttäneiltä ei peritä kalastonhoitomaksua."]};
+  return {c:"warn",h:"Tarvitset vesialueen omistajan luvan",l:"Lupa tarvitaan",
+      i:[(adult?"Valtion kalastonhoitomaksu ja ":"")+"lupa osakaskunnalta tai kalatalousalueelta.","Paikallista myyjää ei ole vielä löydetty."]};
+}
+const ICON={
+  ok:'<svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#2e7a57" stroke-width="2"/><path d="m10 17 5 5 9-10" fill="none" stroke="#2e7a57" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  // koho: lupa tarvitaan
+  warn:'<svg viewBox="0 0 34 34" aria-hidden="true"><line x1="17" y1="1" x2="17" y2="8" stroke="#9a6a10" stroke-width="1.6"/><path d="M17 8 C 24 12, 24 17, 17 17 C 10 17, 10 12, 17 8 Z" fill="#c8412e"/><path d="M17 17 C 24 17, 24 24, 17 31 C 10 24, 10 17, 17 17 Z" fill="#fff" stroke="#9a6a10" stroke-width="1.4"/></svg>',
+  stop:'<svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#b13f2b" stroke-width="2"/><path d="m11 11 12 12M23 11 11 23" stroke="#b13f2b" stroke-width="2.4" stroke-linecap="round"/></svg>'
+};
+const norm=t=>t.toLowerCase().normalize("NFC").trim();
+function matches(s){
+  if(!query) return true;
+  const q=norm(query);
+  return [s.name,s.municipality,...s.aliases].some(x=>norm(x).includes(q));
+}
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function renderList(){
+  const hits=SITES.filter(matches), box=document.getElementById("rlist");
+  if(hits.length && !hits.some(h=>h.id===cur)) cur=hits[0].id;
+  box.innerHTML=`<div class="count">${query?`${hits.length} osumaa`:"Pilottialueen kohteet"}</div>`;
+  if(!hits.length){box.insertAdjacentHTML("beforeend",`<div class="empty">Kohdetta "${esc(query)}" ei vielä löydy. Pilotissa on mukana Aurajoen vesistö. Koko Suomen vesistöt lisätään, kun tiedonkeruu laajenee.</div>`);return}
+  hits.forEach(s=>{
+    const v=verdict(s), b=document.createElement("button");
+    b.className="ritem"; b.setAttribute("aria-current",s.id===cur);
+    b.innerHTML=`<span class="dot bg-${v.c}"></span><span><div class="nm">${esc(s.name)}</div><div class="sub">${esc(s.kind)} · ${esc(s.municipality)}</div></span><span class="st ${v.c}-c">${v.l}</span>`;
+    b.onclick=()=>{cur=s.id;render();};
+    box.appendChild(b);
+  });
+}
+function renderCard(){
+  const s=SITES.find(x=>x.id===cur), v=verdict(s), card=document.getElementById("card");
+  const src=i=>s.sources[i]?` <a href="${s.sources[i].url}" target="_blank" rel="noopener">[${i+1}]</a>`:"";
+  const p=s.permits;
+  card.innerHTML=`
+    <div class="card-head"><div><span class="eyebrow">${esc(s.kind)} · ${esc(s.municipality)}</span><h2>${esc(s.name)}</h2></div>
+      <button class="maplink" id="showmap">Näytä kartalla ↓</button></div>
+    <div class="verdict ${v.c}">${ICON[v.c]}<div class="head">${v.h}</div>
+      <ul>${v.i.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    <div class="grid2">
+      <div class="block"><h3>Lupa <span class="tag ${p.length?"found":"missing"}">${p.length?"löydetty":"ei löydetty"}</span></h3>
+        ${p.length?p.map(x=>`<dl><dt>Kohde</dt><dd>${esc(x.product)}${src(x.source)}</dd><dt>Myyjä</dt><dd><a href="${x.url}" target="_blank" rel="noopener">${esc(x.seller)}</a></dd><dt>Hinta</dt><dd>${x.price?esc(x.price):"Näkyy myyjän sivulla"}</dd></dl>`).join("")
+          :`<p>${s.rapids?"":s.nets_banned?"Yhdellä vavalla kalastetaan kalastonhoitomaksulla. Muihin tapoihin tarvittavaa paikallista lupaa ei vielä löytynyt.":"Lupamyyjää ei vielä löytynyt. Tieto täydentyy tiedonkeruun ja ilmoitusten kautta."}</p>`}
+      </div>
+      <div class="block"><h3>Rauhoitukset <span class="tag ${s.closures.length?"found":"missing"}">${s.closures.length?"löydetty":"ei löydetty"}</span></h3>
+        ${s.closures.length?s.closures.map(c=>`<p>${esc(c.text)}${src(c.source)}</p>`).join(""):"<p>Ei paikallisia tietoja. Yleiset rauhoitusajat ja alamitat koskevat kaikkia vesiä.</p>"}
+      </div>
+      <div class="block"><h3>Kalasto <span class="tag missing">tulossa</span></h3><p>Lajit Kala-atlaksesta ja Luken kalahavainnoista.</p></div>
+      <div class="block"><h3>Istutukset <span class="tag missing">tulossa</span></h3><p>Istutukset lajeittain ja vuosittain Ruokaviraston aineistosta.</p></div>
+    </div>
+    <div class="sources">${s.sources.length?s.sources.map((x,i)=>`<span>[${i+1}] <a href="${x.url}" target="_blank" rel="noopener">${esc(x.title)}</a></span>`).join("")+`<span>Tarkistettu ${DATA.checked.split("-").reverse().join(".")}</span>`:"<span>Ei lähteitä vielä.</span>"}</div>`;
+  document.getElementById("showmap").onclick=()=>{document.getElementById("kartta").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});focusSite(cur)};
+}
+
+/* kartta */
+const map=L.map("map",{zoomControl:false,scrollWheelZoom:false}).fitBounds([[60.44,22.26],[60.58,22.45]],{padding:[30,30]});
+L.control.zoom({position:"bottomright"}).addTo(map);
+const MML=(layer,ext)=>`https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/${layer}/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.${ext}?api-key=${MML_API_KEY}`;
+const MML_ATTR="© Maanmittauslaitos, ortokuva ja taustakartta (CC BY 4.0)";
+const sat=MML_API_KEY
+  ? L.layerGroup([L.tileLayer(MML("ortokuva","jpg"),{maxNativeZoom:16,maxZoom:19,attribution:MML_ATTR})])
+  : L.layerGroup([
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Ilmakuva © Esri, Maxar, Earthstar Geographics"}),
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,opacity:.8})]);
+sat.addTo(map);
+const plain=MML_API_KEY
+  ? L.tileLayer(MML("taustakartta","png"),{maxNativeZoom:16,maxZoom:19,attribution:MML_ATTR})
+  : L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd",attribution:"© OpenStreetMap, © CARTO"});
+let loaded=0,errors=0;
+[...sat.getLayers(),plain].forEach(t=>{t.on("tileload",()=>{loaded++;document.getElementById("tilenote").hidden=true});t.on("tileerror",()=>{errors++;if(!loaded&&errors>3)document.getElementById("tilenote").hidden=false})});
+function setLayer(s){if(s){map.removeLayer(plain);sat.addTo(map)}else{map.removeLayer(sat);plain.addTo(map)}
+  document.getElementById("l-sat").setAttribute("aria-pressed",s);document.getElementById("l-map").setAttribute("aria-pressed",!s)}
+document.getElementById("l-sat").onclick=()=>setLayer(true);
+document.getElementById("l-map").onclick=()=>setLayer(false);
+const COL={ok:"#2e7a57",warn:"#c98a1a",stop:"#b13f2b"};
+let markers={};
+function buildMarkers(){Object.values(markers).forEach(m=>map.removeLayer(m));markers={};
+  SITES.forEach(s=>{markers[s.id]=L.marker([s.lat,s.lon],{title:s.name}).addTo(map).on("click",()=>{cur=s.id;query="";document.getElementById("q").value="";render();document.getElementById("haku").scrollIntoView({behavior:"smooth"})})})}
+buildMarkers();
+function renderMarkers(){SITES.forEach(s=>{const v=verdict(s),sel=s.id===cur;
+  markers[s.id].setIcon(L.divIcon({className:"",iconSize:[18,18],iconAnchor:[9,9],html:`<div class="pin ${sel?"sel":""}" style="background:${COL[v.c]}"><span class="pin-label">${esc(s.name)}</span></div>`}));
+  markers[s.id].setZIndexOffset(sel?1000:0)})}
+function focusSite(id){const s=SITES.find(x=>x.id===id);map.setView([s.lat,s.lon],14)}
+
+function render(){
+  document.querySelectorAll("#methods button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===method));
+  document.querySelectorAll("#ages button").forEach(b=>b.setAttribute("aria-pressed",(b.dataset.a==="adult")===adult));
+  renderList(); if(SITES.filter(matches).length) renderCard(); else document.getElementById("card").innerHTML=`<div class="block"><h3>Ei tulosta</h3><p>Kokeile toista nimeä tai valitse kohde kartalta.</p></div>`;
+  renderMarkers();
+}
+document.getElementById("q").addEventListener("input",e=>{query=e.target.value;render()});
+document.getElementById("methods").addEventListener("click",e=>{const b=e.target.closest("button");if(b){method=b.dataset.m;render()}});
+document.getElementById("ages").addEventListener("click",e=>{const b=e.target.closest("button");if(b){adult=b.dataset.a==="adult";render()}});
+const chips=document.getElementById("chips");
+["Halistenkoski","Nautelankoski","Aurajoki","Paattistenjoki"].forEach(n=>{const b=document.createElement("button");b.textContent=n;b.onclick=()=>{const q=document.getElementById("q");q.value=n;query=n;render()};chips.appendChild(b)});
+
+/* syvyyskäyrät hakualueen taustalle */
+(function(){
+  const svg=document.getElementById("contours"),W=1400,H=520,cx=1080,cy=250;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  let out="";
+  for(let k=1;k<=14;k++){
+    const r=k*34;let d="";
+    for(let a=0;a<=360;a+=4){const t=a*Math.PI/180;
+      const rr=r*(1+.09*Math.sin(3*t+k*.4)+.05*Math.sin(5*t-k*.7));
+      const x=cx+rr*1.5*Math.cos(t),y=cy+rr*Math.sin(t);d+=(a?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
+    out+=`<path d="${d}Z" fill="none" stroke="${k%5===0?"#2d6d72":"#8fb0ae"}" stroke-width="${k%5===0?1.1:.7}" opacity="${k%5===0?.35:.4}"/>`;
+  }
+  svg.innerHTML=out;
+})();
+render();
+fetch("data/sites.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(d=>{
+  if(d&&Array.isArray(d.sites)&&d.sites.length){DATA=d;SITES=d.sites;if(!SITES.some(s=>s.id===cur))cur=SITES[0].id;buildMarkers();render()}
+}).catch(()=>{});
+</script>
+
+</body>
+</html>

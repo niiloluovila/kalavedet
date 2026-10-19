@@ -1,0 +1,132 @@
+{
+ "checked": "2026-10-19",
+ "sites": [
+  {
+   "id": "aurajoki-turku",
+   "name": "Aurajoki, Turun keskusta",
+   "aliases": [
+    "aurajoki",
+    "aura",
+    "turku",
+    "tuomiokirkko"
+   ],
+   "kind": "Hidas virta-alue",
+   "municipality": "Turku",
+   "lat": 60.4503,
+   "lon": 22.2745,
+   "rapids": false,
+   "nets_banned": true,
+   "permits": [],
+   "closures": [
+    {
+     "text": "Lohikalojen rauhoitus 1.10.–30.11. Halistenkosken ja meren välillä. Rauhoitusaikana saadut lohikalat vapautetaan.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Aurajokisäätiö: Kalastus Aurajoella",
+     "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"
+    }
+   ]
+  },
+  {
+   "id": "halistenkoski",
+   "name": "Halistenkoski",
+   "aliases": [
+    "halinen",
+    "halisten koski",
+    "aurajoki"
+   ],
+   "kind": "Koskialue",
+   "municipality": "Turku",
+   "lat": 60.4646,
+   "lon": 22.305,
+   "rapids": true,
+   "nets_banned": true,
+   "permits": [
+    {
+     "product": "Halistenkosken virkistyskalastusalue",
+     "seller": "Kalakortti.com",
+     "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp",
+     "price": null,
+     "source": 1
+    }
+   ],
+   "closures": [
+    {
+     "text": "Kohde on rauhoitettu 1.10.–30.11.",
+     "source": 1
+    }
+   ],
+   "sources": [
+    {
+     "title": "Aurajokisäätiö: Kalastus Aurajoella",
+     "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"
+    },
+    {
+     "title": "Kalakortti.com: virtavesien viehekalastusluvat",
+     "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"
+    }
+   ]
+  },
+  {
+   "id": "nautelankoski",
+   "name": "Nautelankoski",
+   "aliases": [
+    "nautela",
+    "lieto",
+    "aurajoki",
+    "perho"
+   ],
+   "kind": "Koskialue · perhokalastus",
+   "municipality": "Lieto",
+   "lat": 60.5588,
+   "lon": 22.4387,
+   "rapids": true,
+   "nets_banned": true,
+   "permits": [
+    {
+     "product": "Nautelankosken perhokalastusalue",
+     "seller": "Kalakortti.com",
+     "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp",
+     "price": null,
+     "source": 1
+    }
+   ],
+   "closures": [
+    {
+     "text": "Lohikalojen syysrauhoitus 1.9.–30.11. Rauhoitusaikana saadut lohikalat vapautetaan.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Aurajokisäätiö: Kalastus Aurajoella",
+     "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"
+    },
+    {
+     "title": "Kalakortti.com: virtavesien viehekalastusluvat",
+     "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"
+    }
+   ]
+  },
+  {
+   "id": "paattistenjoki",
+   "name": "Paattistenjoki",
+   "aliases": [
+    "paattinen",
+    "auvainen"
+   ],
+   "kind": "Sivujoki",
+   "municipality": "Turku, Paattinen",
+   "lat": 60.5736,
+   "lon": 22.3512,
+   "rapids": false,
+   "nets_banned": false,
+   "permits": [],
+   "closures": [],
+   "sources": []
+  }
+ ]
+}

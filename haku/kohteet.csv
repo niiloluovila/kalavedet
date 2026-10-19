@@ -1,0 +1,5 @@
+id,name,municipality,lat,lon,water_system,rapids,aliases
+aurajoki-turku,"Aurajoki, Turun keskusta",Turku,60.4503,22.2745,Aurajoki,,aurajoki;aura;turku
+halistenkoski,Halistenkoski,Turku,60.4646,22.3050,Aurajoki,x,halinen;aurajoki
+nautelankoski,Nautelankoski,Lieto,60.5588,22.4387,Aurajoki,x,nautela;lieto;aurajoki
+paattistenjoki,Paattistenjoki,"Turku, Paattinen",60.5736,22.3512,Aurajoki (sivujoki),,paattinen
