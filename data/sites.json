@@ -222,7 +222,16 @@
      "title": "Helsingin kaupunki: Kalastusmääräykset",
      "url": "https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/ulkoilu-puistot-ja-luontokohteet/kalastus/kalastusmaaraykset"
     }
-   ]
+   ],
+   "species": {
+    "list": [
+     "lohi",
+     "taimen",
+     "siika",
+     "kuha"
+    ],
+    "source": 1
+   }
   },
   {
    "id": "langinkoski",
@@ -281,7 +290,16 @@
      "title": "Luontoon.fi: Kalastus Langinkoskella",
      "url": "https://www.luontoon.fi/en/destinations/langinkoski-nature-reserve/activities-and-trails/fishing"
     }
-   ]
+   ],
+   "species": {
+    "list": [
+     "toutain",
+     "merilohi",
+     "meritaimen",
+     "siika"
+    ],
+    "source": 0
+   }
   },
   {
    "id": "oulankajoki",
@@ -330,14 +348,29 @@
     {
      "text": "Onginta ja pilkintä on kielletty virtavesissä, ja alue on käytännössä kokonaan virtavettä.",
      "source": 0
+    },
+    {
+     "text": "Alamitat: taimen 60 cm ja harjus 35 cm. Saaliiksi yksi taimen päivässä ja enintään kaksi kaudessa.",
+     "source": 1
     }
    ],
    "sources": [
     {
      "title": "Eräluvat.fi: Oulankajoki",
      "url": "https://www.eraluvat.fi/en/areas/5572-oulankajoki-521/products"
+    },
+    {
+     "title": "Kuusamon kaupunki: Oulanka–Kitkajoen yhtenäislupa",
+     "url": "https://kuusamo.fi/en/files/eng-oulanka-kitkajoen-yhtenaislupa"
     }
-   ]
+   ],
+   "species": {
+    "list": [
+     "taimen",
+     "harjus"
+    ],
+    "source": 1
+   }
   },
   {
    "id": "tornionjoki",
@@ -412,7 +445,8 @@
      "title": "Eräluvat.fi: Tornionjoki–Muonionjoki–Könkämäeno",
      "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno"
     }
-   ]
+   ],
+   "permit_everywhere": true
   },
   {
    "id": "kokemaenjoki",
@@ -472,6 +506,239 @@
     {
      "title": "Lounais-Suomen elinvoimakeskus: Päätös koski- ja virta-alueista 29.7.2026",
      "url": "https://kokemaki.fi/wp-content/uploads/2026/07/Paatoskuulutus-Karvianjoen-ja-Kokemaenjoen-koski-ja-virta-alueista.pdf"
+    }
+   ]
+  },
+  {
+   "id": "simojoki",
+   "name": "Simojoki, Simo",
+   "river": "Simojoki",
+   "aliases": [
+    "simojoki",
+    "simo",
+    "lohi",
+    "lappi",
+    "meri-lappi"
+   ],
+   "kind": "Lohijoki",
+   "municipality": "Simo",
+   "lat": 65.6583,
+   "lon": 25.067,
+   "rapids": "osittain",
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Simojoen viehekalastuslupa",
+     "seller": "Eräluvat.fi (Metsähallitus)",
+     "url": "https://www.eraluvat.fi/en/areas/2581-simojoki-simo-511/products",
+     "price": "vrk 25 €, viikko 90 €, kausi 120 €. Alle 18 v. puoleen hintaan.",
+     "methods": [
+      "viehe",
+      "useampi"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Vuorokauden mittainen viikkorauhoitus 15.6.–31.8. Tarkista tarkat ajat lupaehdoista.",
+     "source": 0
+    }
+   ],
+   "rules": [
+    {
+     "text": "Koski- ja virtapaikoilla viehekalastukseen tarvitaan lupa ja kalastonhoitomaksu.",
+     "source": 0
+    },
+    {
+     "text": "Suvannoissa yhdellä vavalla ja vieheellä riittää kalastonhoitomaksu. Useampi vapa vaatii luvan.",
+     "source": 0
+    },
+    {
+     "text": "Onginta ja pilkintä on kielletty virta- ja koskipaikoilla.",
+     "source": 0
+    },
+    {
+     "text": "Osa joen vesistä on yksityisiä eikä kuulu lupa-alueeseen. Tarkista lupa-alueen kartta.",
+     "source": 0
+    }
+   ],
+   "species": {
+    "list": [
+     "lohi",
+     "taimen",
+     "harjus",
+     "siika",
+     "hauki",
+     "ahven"
+    ],
+    "source": 0
+   },
+   "stocking": {
+    "text": "Lohikanta on luonnonvarainen, eikä lohta istuteta.",
+    "source": 0
+   },
+   "sources": [
+    {
+     "title": "Eräluvat.fi: Simojoki, Simo",
+     "url": "https://www.eraluvat.fi/en/areas/2581-simojoki-simo-511/products"
+    }
+   ]
+  },
+  {
+   "id": "iijoki",
+   "name": "Iijoki, Jurmu–Ervasti",
+   "river": "Iijoki",
+   "aliases": [
+    "iijoki",
+    "jurmu",
+    "ervasti",
+    "taivalkoski",
+    "pudasjärvi",
+    "koillismaa"
+   ],
+   "kind": "Lohijoen keskiosa",
+   "municipality": "Taivalkoski ja Pudasjärvi",
+   "lat": 65.47,
+   "lon": 27.75,
+   "rapids": "osittain",
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Iijoen keskiosan viehekalastuslupa",
+     "seller": "Eräluvat.fi (Metsähallitus)",
+     "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/the-middle-course-of-river-iijoki.html",
+     "price": "vrk 15 €, viikko 30 €, kausi 60 €. Alle 18 v. puoleen hintaan.",
+     "methods": [
+      "viehe"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Kalastusaika 1.6.–31.10.",
+     "source": 0
+    },
+    {
+     "text": "Rauhoitusalueet: Lapinkoski–Honkakoski (noin 300 m) ja Tipparinne (noin 600 m).",
+     "source": 0
+    },
+    {
+     "text": "Vuoden 2026 alusta rasvaevälliset taimenet ja lohet ovat lupa-alueella rauhoitettuja.",
+     "source": 0
+    }
+   ],
+   "rules": [
+    {
+     "text": "Koski- ja virtapaikoilla viehekalastukseen tarvitaan lupa.",
+     "source": 0
+    },
+    {
+     "text": "Onginta ja pilkintä on kielletty virta- ja koskipaikoilla, suvannoissa yhdellä vavalla maksutta.",
+     "source": 0
+    },
+    {
+     "text": "Jurmukosken länsirannalla on noin 650 metrin yksityinen vesialue, joka ei kuulu lupa-alueeseen.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Eräluvat.fi: Iijoen keskiosa",
+     "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/the-middle-course-of-river-iijoki.html"
+    }
+   ]
+  },
+  {
+   "id": "lieksanjoki",
+   "name": "Lieksanjoki, Lieksa",
+   "river": "Lieksanjoki",
+   "aliases": [
+    "lieksanjoki",
+    "lieksa",
+    "ruunaa",
+    "pankajärvi",
+    "pohjois-karjala"
+   ],
+   "kind": "Järvilohijoki",
+   "municipality": "Lieksa",
+   "lat": 63.317,
+   "lon": 30.017,
+   "rapids": "osittain",
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Lieksanjoen viehelupa",
+     "seller": "Kalakortti.com sekä Retki-Aitta, Sportia ja Neitikosken retkeilykeskus",
+     "url": "https://www.kalakortti.com/luvan_tilaus/shopdisplayproducts.asp?id=202&cat=Lieksanjoen+viehelupa",
+     "price": "kausi 30 €, kuukausi 20 €, viikko 10 €, vrk 5 €. Alle 18 v. puoleen hintaan.",
+     "methods": [
+      "viehe",
+      "useampi"
+     ],
+     "source": 0
+    },
+    {
+     "product": "Lieksanjoen pyydyslupa",
+     "seller": "Kalakortti.com ja paikalliset myyjät",
+     "url": "https://www.kalakortti.com/luvan_tilaus/shopdisplayproducts.asp?id=202&cat=Lieksanjoen+viehelupa",
+     "price": "4 € / pyydys",
+     "methods": [
+      "pyydys"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Vieheellä kalastus on kielletty voimalaitoksen ja säännöstelypadon alapuolella 1.9.–30.11.",
+     "source": 0
+    },
+    {
+     "text": "Naarakoski–Saarikoski: kaikki kalastus kielletty 1.9.–30.11.",
+     "source": 0
+    },
+    {
+     "text": "Vanhassa uomassa kalastus on kielletty ympäri vuoden.",
+     "source": 0
+    },
+    {
+     "text": "Harjus on rauhoitettu huhti- ja toukokuussa.",
+     "source": 0
+    }
+   ],
+   "rules": [
+    {
+     "text": "Rasvaevälliset järvilohet ja järvitaimenet on vapautettava. Saaliiksi yksi rasvaeväleikattu lohi tai taimen päivässä.",
+     "source": 0
+    },
+    {
+     "text": "Alamitat: harjus 35 cm, järvilohi 60 cm ja järvitaimen 50 cm.",
+     "source": 0
+    },
+    {
+     "text": "Kiinteät pyydykset eivät ole sallittuja koski- ja virta-alueilla. Verkot ovat kiellettyjä Pankajärven ja Pielisen välisellä alaosalla tietyin poikkeuksin.",
+     "source": 0
+    },
+    {
+     "text": "Rajavyöhykkeen vedet eivät kuulu lupa-alueeseen.",
+     "source": 0
+    }
+   ],
+   "species": {
+    "list": [
+     "järvilohi",
+     "järvitaimen",
+     "harjus",
+     "hauki"
+    ],
+    "source": 0
+   },
+   "sources": [
+    {
+     "title": "Kalakortti.com: Lieksanjoen lupaehdot 2026",
+     "url": "https://www.kalakortti.com/luvan_tilaus/Maps/202/Lupaehdot_Lieksanjoki_2026.pdf"
     }
    ]
   }
