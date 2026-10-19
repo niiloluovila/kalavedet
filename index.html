@@ -69,6 +69,7 @@ button,input,select{font:inherit;color:inherit}
 .choose{position:relative;width:fit-content;max-width:100%;box-sizing:border-box;background:var(--ink);color:#efe7da;padding:24px 30px 26px}
 .choose::before{content:"";position:absolute;inset:8px;border:1.5px dashed rgba(201,147,95,.6);pointer-events:none}
 .choose .hint{margin:0 0 4px;font-size:.88rem;color:#cdbfa8}
+.choose .hint.foot{margin:6px 0 0;font-size:.8rem;color:#a99d89}
 .choose .sentence{margin:0;color:#efe7da;font-size:clamp(1.2rem,2.3vw,1.5rem);line-height:2;max-width:none}
 .choose .sentence select{color:#fff;background-color:rgba(255,255,255,.07);border-bottom:2px solid #c9935f;padding:0 30px 0 10px;
   background-image:linear-gradient(45deg,transparent 50%,#c9935f 50%),linear-gradient(135deg,#c9935f 50%,transparent 50%);background-position:calc(100% - 14px) 55%,calc(100% - 9px) 55%}
@@ -136,6 +137,7 @@ button,input,select{font:inherit;color:inherit}
 .tilenote{position:absolute;z-index:450;left:14px;bottom:14px;max-width:320px;background:var(--paper);padding:10px 12px;font-size:.84rem;color:var(--muted)}
 .pin{width:16px;height:16px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.45);position:relative}
 .pin.sel{width:22px;height:22px;margin:-3px 0 0 -3px;box-shadow:0 0 0 3px var(--leather),0 3px 12px rgba(0,0,0,.5)}
+.nolabels .pin:not(.sel) .pin-label{display:none}
 .pin-label{position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;font:600 12.5px/1 var(--f);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.6)}
 
 footer{background:var(--ink);color:#c8c1b1;font-size:.88rem}
@@ -170,7 +172,7 @@ footer a{color:#e2c399}
     <svg class="contours" id="contours" aria-hidden="true" preserveAspectRatio="xMidYMid slice"></svg>
     <div class="inner gutter">
       <h1>Mistä saan <span>kalastusluvan?</span></h1>
-      <p class="lede">Lupatiedot, rauhoitukset ja ostopaikat yhdestä paikasta. Mukana nyt Aurajoen vesistö, muu Suomi tulee perässä.</p>
+      <p class="lede">Lupatiedot, rauhoitukset ja ostopaikat yhdestä paikasta. Mukana nyt kuusi jokea Turusta Tornioon. Lisää tulee koko ajan.</p>
       <div class="search">
         <label for="q">Hae vesistön nimellä</label>
         <div class="field">
@@ -191,10 +193,11 @@ footer a{color:#e2c399}
         </select>
         ja olen
         <select id="age" aria-label="Ikä">
-          <option value="adult" selected>18–64-vuotias</option>
-          <option value="other">alle 18 tai yli 64</option>
+          <option value="adult" selected>18–69-vuotias</option>
+          <option value="other">alle 18- tai yli 69-vuotias</option>
         </select>.
       </p>
+      <p class="hint foot">Kalastonhoitomaksusta on vapautettu myös se, joka täytti 65 vuotta viimeistään vuonna 2023.</p>
       </div>
     </div>
     <svg class="shore" id="shore" viewBox="0 0 1440 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
@@ -250,42 +253,33 @@ footer a{color:#e2c399}
 const MML_API_KEY="";
 
 /* Data ladataan tiedostosta data/sites.json. Alla oleva kopio on varalla, jos sivu avataan suoraan tiedostona. */
-let DATA={"checked":"2026-10-19","sites":[
- {"id":"aurajoki-turku","name":"Aurajoki, Turun keskusta","aliases":["aurajoki","aura","turku","tuomiokirkko"],"kind":"Hidas virta-alue","municipality":"Turku","lat":60.4503,"lon":22.2745,
-  "rapids":false,"nets_banned":true,"permits":[],
-  "closures":[{"text":"Lohikalojen rauhoitus 1.10.–30.11. Halistenkosken ja meren välillä. Rauhoitusaikana saadut lohikalat vapautetaan.","source":0}],
-  "sources":[{"title":"Aurajokisäätiö: Kalastus Aurajoella","url":"https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"}]},
- {"id":"halistenkoski","name":"Halistenkoski","aliases":["halinen","halisten koski","aurajoki"],"kind":"Koskialue","municipality":"Turku","lat":60.4646,"lon":22.3050,
-  "rapids":true,"nets_banned":true,
-  "permits":[{"product":"Halistenkosken virkistyskalastusalue","seller":"Kalakortti.com","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp","price":null,"source":1}],
-  "closures":[{"text":"Kohde on rauhoitettu 1.10.–30.11.","source":1}],
-  "sources":[{"title":"Aurajokisäätiö: Kalastus Aurajoella","url":"https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"},{"title":"Kalakortti.com: virtavesien viehekalastusluvat","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"}]},
- {"id":"nautelankoski","name":"Nautelankoski","aliases":["nautela","lieto","aurajoki","perho"],"kind":"Koskialue · perhokalastus","municipality":"Lieto","lat":60.5588,"lon":22.4387,
-  "rapids":true,"nets_banned":true,
-  "permits":[{"product":"Nautelankosken perhokalastusalue","seller":"Kalakortti.com","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp","price":null,"source":1}],
-  "closures":[{"text":"Lohikalojen syysrauhoitus 1.9.–30.11. Rauhoitusaikana saadut lohikalat vapautetaan.","source":0}],
-  "sources":[{"title":"Aurajokisäätiö: Kalastus Aurajoella","url":"https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"},{"title":"Kalakortti.com: virtavesien viehekalastusluvat","url":"https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"}]},
- {"id":"paattistenjoki","name":"Paattistenjoki","aliases":["paattinen","auvainen"],"kind":"Sivujoki","municipality":"Turku, Paattinen","lat":60.5736,"lon":22.3512,
-  "rapids":false,"nets_banned":false,"permits":[],"closures":[],"sources":[]}
-]};
+let DATA={"checked": "2026-10-19", "sites": [{"id": "aurajoki-turku", "name": "Aurajoki, Turun keskusta", "river": "Aurajoki", "aliases": ["aurajoki", "aura", "turku", "varsinais-suomi"], "kind": "Hidas virta-alue", "municipality": "Turku", "lat": 60.4503, "lon": 22.2745, "rapids": false, "nets_banned": true, "permits": [], "closures": [{"text": "Lohikalojen rauhoitus 1.10.–30.11. Halistenkosken ja meren välillä. Rauhoitusaikana saadut lohikalat vapautetaan.", "source": 0}], "rules": [{"text": "Verkkokalastus on kielletty koko joessa.", "source": 0}], "sources": [{"title": "Aurajokisäätiö: Kalastus Aurajoella", "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"}]}, {"id": "halistenkoski", "name": "Halistenkoski", "river": "Aurajoki", "aliases": ["halinen", "aurajoki", "turku"], "kind": "Koskialue", "municipality": "Turku", "lat": 60.4646, "lon": 22.305, "rapids": true, "nets_banned": true, "permits": [{"product": "Halistenkosken virkistyskalastusalue", "seller": "Kalakortti.com", "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp", "price": null, "methods": ["viehe"], "source": 1}], "closures": [{"text": "Kohde on rauhoitettu 1.10.–30.11.", "source": 1}], "rules": [{"text": "Verkkokalastus on kielletty koko joessa.", "source": 0}], "sources": [{"title": "Aurajokisäätiö: Kalastus Aurajoella", "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"}, {"title": "Kalakortti.com: Virtavesien viehekalastusluvat", "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"}]}, {"id": "nautelankoski", "name": "Nautelankoski", "river": "Aurajoki", "aliases": ["nautela", "lieto", "aurajoki", "perho"], "kind": "Koskialue, perhokalastus", "municipality": "Lieto", "lat": 60.5588, "lon": 22.4387, "rapids": true, "nets_banned": true, "permits": [{"product": "Nautelankosken perhokalastusalue", "seller": "Kalakortti.com", "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp", "price": null, "methods": ["viehe"], "source": 1}], "closures": [{"text": "Lohikalojen syysrauhoitus 1.9.–30.11. Rauhoitusaikana saadut lohikalat vapautetaan.", "source": 0}], "rules": [{"text": "Verkkokalastus on kielletty koko joessa.", "source": 0}], "sources": [{"title": "Aurajokisäätiö: Kalastus Aurajoella", "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"}, {"title": "Kalakortti.com: Virtavesien viehekalastusluvat", "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"}]}, {"id": "paattistenjoki", "name": "Paattistenjoki", "river": "Aurajoki", "aliases": ["paattinen", "aurajoki"], "kind": "Sivujoki", "municipality": "Turku", "lat": 60.5736, "lon": 22.3512, "rapids": false, "nets_banned": false, "permits": [], "closures": [], "rules": [], "sources": []}, {"id": "vanhankaupunginkoski", "name": "Vanhankaupunginkoski", "river": "Vantaanjoki", "aliases": ["vantaanjoki", "vanhakaupunki", "helsinki", "arabianranta"], "kind": "Koskialue", "municipality": "Helsinki", "lat": 60.2164, "lon": 24.981, "rapids": true, "nets_banned": false, "permits": [{"product": "Vanhankaupunginkosken koskilupa", "seller": "Kalakortti.com", "url": "https://www.kalakortti.com", "price": "12 € kalastusvuoro, alle 18 v. 6 €", "methods": ["viehe"], "source": 0}], "closures": [{"text": "Lohi, taimen ja siika on rauhoitettu 1.9.–30.11. Kosken yläosa on silloin kokonaan suljettu.", "source": 1}, {"text": "Kahlaaminen on kielletty 1.9.–15.6.", "source": 1}], "rules": [{"text": "Perhokalastus parittomina ja viehekalastus parillisina päivinä.", "source": 1}, {"text": "Onginta, pilkintä sekä kalastus silloilta ja veneestä on kielletty.", "source": 1}, {"text": "Enintään kolme kalaa kalastusvuoroa kohden. Alamitta lohelle ja taimenelle 60 cm.", "source": 1}, {"text": "Lupa tarvitaan myös lapsille.", "source": 0}], "sources": [{"title": "Helsingin kaupunki: Kalastusluvat ja hinnat", "url": "https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/ulkoilu-puistot-ja-luontokohteet/kalastus/kalastusluvat-ja-hinnat"}, {"title": "Helsingin kaupunki: Kalastusmääräykset", "url": "https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/ulkoilu-puistot-ja-luontokohteet/kalastus/kalastusmaaraykset"}]}, {"id": "langinkoski", "name": "Langinkoski", "river": "Kymijoki", "aliases": ["kymijoki", "kotka", "keisarillinen kalastusmaja"], "kind": "Koskialue, perhokalastus", "municipality": "Kotka", "lat": 60.5204, "lon": 26.9144, "rapids": true, "only_fly": true, "nets_banned": false, "permits": [{"product": "Langinkosken kalastuslupa", "seller": "Eräluvat.fi (Metsähallitus)", "url": "https://www.eraluvat.fi/en/areas/7581-langinkoski-84/products", "price": "6 h 20 €, 12 h 25 €, vrk 35 €. Alle 18 v. puoleen hintaan.", "methods": ["viehe"], "source": 0}], "closures": [{"text": "Kalastusaika 1.1.–30.9. ja 1.–31.12.", "source": 0}], "rules": [{"text": "Vain perhokalastus perinteisillä perhovälineillä.", "source": 1}, {"text": "Enintään kahdeksan kalastajaa kerrallaan.", "source": 0}, {"text": "Rasvaevälliset lohet ja meritaimenet on vapautettava.", "source": 1}], "sources": [{"title": "Eräluvat.fi: Langinkoski", "url": "https://www.eraluvat.fi/en/areas/7581-langinkoski-84/products"}, {"title": "Luontoon.fi: Kalastus Langinkoskella", "url": "https://www.luontoon.fi/en/destinations/langinkoski-nature-reserve/activities-and-trails/fishing"}]}, {"id": "oulankajoki", "name": "Oulankajoki", "river": "Oulankajoki", "aliases": ["oulanka", "kuusamo", "kitkajoki", "kansallispuisto", "koillismaa"], "kind": "Virtavesi, kansallispuisto", "municipality": "Kuusamo", "lat": 66.3756, "lon": 29.3386, "rapids": true, "nets_banned": false, "permits": [{"product": "Oulankajoen viehekalastuslupa", "seller": "Eräluvat.fi (Metsähallitus)", "url": "https://www.eraluvat.fi/en/areas/5572-oulankajoki-521/products", "price": "vrk 15 €, viikko 50 €. Alle 18 v. puoleen hintaan.", "methods": ["viehe"], "source": 0}], "closures": [{"text": "Kalastusaika 1.6.–31.8.", "source": 0}, {"text": "Kalastus on kielletty rauhoitusalueilla, mm. Kiutaköngäs, Taivalköngäs ja Mikonmutka. Tarkista rajat lupa-alueen kartasta.", "source": 0}], "rules": [{"text": "Sallitut tavat: heitto- ja perhokalastus.", "source": 0}, {"text": "Onginta ja pilkintä on kielletty virtavesissä, ja alue on käytännössä kokonaan virtavettä.", "source": 0}], "sources": [{"title": "Eräluvat.fi: Oulankajoki", "url": "https://www.eraluvat.fi/en/areas/5572-oulankajoki-521/products"}]}, {"id": "tornionjoki", "name": "Tornionjoki, Ylitornio", "river": "Tornionjoki", "aliases": ["tornionjoki", "tornio", "ylitornio", "lohi", "lappi", "muonionjoki"], "kind": "Rajajoki, lohijoki", "municipality": "Ylitornio", "lat": 66.317, "lon": 23.667, "rapids": "osittain", "nets_banned": false, "permits": [{"product": "Tornionjoen yhteislupa", "seller": "Eräluvat.fi ja paikalliset myyjät", "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno", "price": "kausi 200 €, viikko 90 €, vrk 20 €. 15–17 v. puoleen hintaan, alle 15 v. ei tarvitse lupaa.", "methods": ["viehe"], "source": 0}, {"product": "Aluekohtainen kausilupa, Ylitornio", "seller": "Eräluvat.fi", "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno", "price": "90 €, 15–17 v. 45 €", "methods": ["viehe"], "source": 0}], "closures": [{"text": "Lohenkalastus on sallittu vain 8.6.–25.8. Vuonna 2026 kalastus oli täysin auki 15.8. asti ja sen jälkeen rajoitettua.", "source": 0}, {"text": "Lohen viikkorauhoitus sunnuntaista klo 19 maanantaihin klo 19.", "source": 0}, {"text": "Yleinen kalastusaika 16.12.–14.9.", "source": 0}], "rules": [{"text": "Vuonna 2026 enintään kaksi lohta kalastajaa kohden, minkä jälkeen lohenkalastus on lopetettava.", "source": 0}, {"text": "Pelastusliivi on pakollinen, ja saaliista on tehtävä ilmoitus.", "source": 0}, {"text": "Onginta ja pilkintä on kielletty virta- ja koskipaikoilla.", "source": 0}], "sources": [{"title": "Eräluvat.fi: Tornionjoki–Muonionjoki–Könkämäeno", "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno"}]}, {"id": "kokemaenjoki", "name": "Kokemäenjoki, Kokemäki", "river": "Kokemäenjoki", "aliases": ["kokemäenjoki", "kokemäki", "loimijoki", "satakunta", "harjavalta"], "kind": "Joki, suvantojaksot", "municipality": "Kokemäki", "lat": 61.2583, "lon": 22.35, "rapids": false, "nets_banned": false, "permits": [{"product": "Monivapalupa", "seller": "Kokemäen kalatalousalue (myös Kalakortti.com)", "url": "https://www.kokemaenkalatalousalue.fi/kalastusluvat", "price": "40 €, enintään 6 vapaa venekuntaa kohden", "methods": ["useampi"], "source": 0}, {"product": "Verkkolupa", "seller": "Kokemäen kalatalousalue (myös Kalakortti.com)", "url": "https://www.kokemaenkalatalousalue.fi/kalastusluvat", "price": "10 € / 30 m, enintään 4 kpl", "methods": ["pyydys"], "source": 0}], "closures": [], "rules": [{"text": "Koski- ja virta-alueilla onginta ja pilkintä on kokonaan kielletty, ja viehekalastukseen tarvitaan vesialueen omistajan lupa.", "source": 1}, {"text": "Monivapaluvalla sivuperäsinten käyttö on kielletty.", "source": 0}], "sources": [{"title": "Kokemäen kalatalousalue: Kalastusluvat", "url": "https://www.kokemaenkalatalousalue.fi/kalastusluvat"}, {"title": "Lounais-Suomen elinvoimakeskus: Päätös koski- ja virta-alueista 29.7.2026", "url": "https://kokemaki.fi/wp-content/uploads/2026/07/Paatoskuulutus-Karvianjoen-ja-Kokemaenjoen-koski-ja-virta-alueista.pdf"}]}]};
 let SITES=DATA.sites;
 
 let method="viehe", adult=true, cur="halistenkoski", query="";
 
+const permitFor=(s,m)=>s.permits.find(p=>(p.methods||["viehe"]).includes(m));
 function verdict(s){
   const fee=adult?" ja valtion kalastonhoitomaksun":"";
   if(s.nets_banned && method==="pyydys")
     return {c:"stop",l:"Kielletty",say:"Verkkokalastus on täällä kielletty.",p:["Kielto koskee koko jokea."]};
+  if(s.only_fly && method!=="viehe")
+    return {c:"stop",l:"Ei sallittu",say:"Täällä sallitaan vain perhokalastus.",p:["Muut kalastustavat ovat kohteessa kiellettyjä."]};
   if(s.rapids){
-    const p=s.permits[0];
+    if(method==="onki" && s.rapids==="osittain") return {c:"warn",l:"Vain suvannoissa",say:"Saat ongella ja pilkkiä maksutta vain suvantopaikoilla.",p:["Virta- ja koskipaikoilla onginta ja pilkintä on kielletty."]};
+    if(method==="onki") return {c:"stop",l:"Kielletty",say:"Onginta ja pilkintä ovat täällä kiellettyjä.",p:["Koski- ja virta-alueilla jokamiehenoikeudet eivät ole voimassa."]};
+    if(method!=="viehe") return {c:"stop",l:"Ei sallittu",say:"Täällä saa kalastaa vain vavalla ja vieheellä.",p:["Koski- ja virta-alueilla muut kalastustavat eivät ole sallittuja ilman erillistä lupaa."]};
+    const p=permitFor(s,"viehe");
     if(p) return {c:"warn",l:"Kohdelupa",say:"Tarvitset kohdeluvan"+fee+".",
-      p:["Koski- ja virta-alueilla yleiskalastusoikeus ei ole voimassa, joten pelkkä kalastonhoitomaksu ei riitä."]};
+      p:[s.only_fly?"Kohteessa sallitaan vain perhokalastus.":"Koski- ja virta-alueilla yleiskalastusoikeus ei ole voimassa, joten pelkkä kalastonhoitomaksu ei riitä."]};
     return {c:"stop",l:"Ei sallittu",say:"Tarvitset vesialueen omistajan luvan.",p:["Koski- ja virta-alueilla yleiskalastusoikeus ei ole voimassa. Lupamyyjää ei ole vielä löydetty."]};
   }
   if(method==="onki") return {c:"ok",l:"Maksuton",say:"Saat ongella ja pilkkiä maksutta.",p:["Onginta ja pilkintä ovat jokamiehenoikeuksia koski- ja virta-alueiden ulkopuolella."]};
   if(method==="viehe") return adult
       ? {c:"ok",l:"Maksu riittää",say:"Kalastonhoitomaksu riittää.",p:["Maksulla saa kalastaa yhdellä vavalla ja vieheellä koko Suomessa, kun paikalla ei ole erityisiä rajoituksia."]}
-      : {c:"ok",l:"Maksuton",say:"Saat kalastaa maksutta.",p:["Alle 18- ja yli 64-vuotiailta ei peritä kalastonhoitomaksua."]};
+      : {c:"ok",l:"Maksuton",say:"Saat kalastaa maksutta.",p:["Alle 18- ja yli 69-vuotiailta ei peritä kalastonhoitomaksua."]};
+  const p=permitFor(s,method);
+  if(p) return {c:"warn",l:"Lupa tarvitaan",say:"Tarvitset vesialueen omistajan luvan"+fee+".",p:[`Sopiva lupa on ${p.product}, jota myy ${p.seller}.`]};
   return {c:"warn",l:"Lupa tarvitaan",say:"Tarvitset vesialueen omistajan luvan"+fee+".",p:["Lupa ostetaan osakaskunnalta tai kalatalousalueelta. Tämän kohteen myyjää ei ole vielä löydetty."]};
 }
 const norm=t=>t.toLowerCase().normalize("NFC").trim();
@@ -298,11 +292,11 @@ function renderList(){
   if(hits.length && !hits.some(h=>h.id===cur)) cur=hits[0].id;
   document.getElementById("count").textContent=query?`${hits.length} ${hits.length===1?"kohde":"kohdetta"}`:"Kohteet";
   box.innerHTML="";
-  if(!hits.length){box.innerHTML=`<div class="empty">Hakusanalla "${esc(query)}" ei löytynyt kohdetta. Mukana on toistaiseksi vain Aurajoen vesistö.</div>`;return hits}
+  if(!hits.length){box.innerHTML=`<div class="empty">Hakusanalla "${esc(query)}" ei löytynyt kohdetta. Mukana ovat toistaiseksi vain pilottijoet.</div>`;return hits}
   hits.forEach(s=>{
     const v=verdict(s), b=document.createElement("button");
     b.className="row"; b.setAttribute("aria-current",s.id===cur);
-    b.innerHTML=`<span class="nm">${esc(s.name)}</span><span class="st c-${v.c}">${v.l}</span><span class="sub">${esc(s.kind)}, ${esc(s.municipality)}</span>`;
+    b.innerHTML=`<span class="nm">${esc(s.name)}</span><span class="st c-${v.c}">${v.l}</span><span class="sub">${esc(s.river||s.kind)}, ${esc(s.municipality)}</span>`;
     b.onclick=()=>{cur=s.id;render();if(innerWidth<=860)document.getElementById("detail").scrollIntoView({behavior:"smooth",block:"start"})};
     box.appendChild(b);
   });
@@ -311,18 +305,19 @@ function renderList(){
 function renderDetail(){
   const s=SITES.find(x=>x.id===cur), v=verdict(s), el=document.getElementById("detail");
   const srcName=i=>s.sources[i]?` <span class="src">(${esc(s.sources[i].title.split(":")[0])})</span>`:"";
-  const p=s.permits[0];
-  const closures=s.closures.length?s.closures.map(c=>esc(c.text)+srcName(c.source)).join("<br>"):`<span class="none">Ei paikallisia rauhoituksia tiedossa. Yleiset rauhoitusajat ja alamitat ovat voimassa.</span>`;
+  const list=(arr,none)=>arr&&arr.length?arr.map(c=>esc(c.text)+srcName(c.source)).join("<br>"):`<span class="none">${none}</span>`;
+  const match=permitFor(s,method);
+  const permits=[...s.permits].sort((a,b)=>(b===match)-(a===match));
   el.innerHTML=`
     <div>
       <div class="meta"><span>${esc(s.kind)}, ${esc(s.municipality)}</span><a href="#kartta" id="showmap">Näytä kartalla</a></div>
       <h2>${esc(s.name)}</h2>
     </div>
-    <div class="answer"><p class="say c-${v.c}">${v.say}</p>${v.p.map(x=>`<p>${esc(x)}</p>`).join("")}</div>
-    ${p?`<div class="permit"><span class="lbl">Kalastuslupa</span><span class="pn">${esc(p.product)}</span><span class="ps">${esc(p.seller)}${p.price?" · "+esc(p.price):" · hinta myyjän sivulla"}</span><a class="buy" href="${p.url}" target="_blank" rel="noopener">Osta lupa</a></div>`:""}
+    <div class="answer"><p class="say">${v.say}</p>${v.p.map(x=>`<p>${esc(x)}</p>`).join("")}</div>
+    ${permits.map(p=>`<div class="permit"><span class="lbl">Kalastuslupa</span><span class="pn">${esc(p.product)}</span><span class="ps">${esc(p.seller)} · ${p.price?esc(p.price):"hinta myyjän sivulla"}</span><a class="buy" href="${p.url}" target="_blank" rel="noopener">Osta lupa</a></div>`).join("")}
     <dl class="spec">
-      <div><dt>Rauhoitukset</dt><dd>${closures}</dd></div>
-      <div><dt>Verkkokalastus</dt><dd>${s.nets_banned?"Kielletty koko joessa"+srcName(0):`<span class="none">Ei paikallista kieltoa tiedossa</span>`}</dd></div>
+      <div><dt>Rauhoitukset</dt><dd>${list(s.closures,"Ei paikallisia rauhoituksia tiedossa. Yleiset rauhoitusajat ja alamitat ovat voimassa.")}</dd></div>
+      <div><dt>Säännöt</dt><dd>${list(s.rules,"Ei paikallisia sääntöjä tiedossa.")}</dd></div>
       <div><dt>Kalasto</dt><dd><span class="none">Lisätään Kala-atlaksesta ja Luken kalahavainnoista</span></dd></div>
       <div><dt>Istutukset</dt><dd><span class="none">Lisätään Ruokaviraston aineistosta</span></dd></div>
     </dl>
@@ -336,6 +331,7 @@ const COL={ok:"#3a7450",warn:"#b4843a",stop:"#a4412e"};
 if(window.L){
   map=L.map("map",{zoomControl:false,scrollWheelZoom:false}).fitBounds([[60.44,22.26],[60.58,22.45]],{padding:[30,30]});
   L.control.zoom({position:"bottomright"}).addTo(map);
+  map.on("zoomend",()=>map.getContainer().classList.toggle("nolabels",map.getZoom()<9));
   const MML=(layer,ext)=>`https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/${layer}/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.${ext}?api-key=${MML_API_KEY}`;
   const MML_ATTR="© Maanmittauslaitos (CC BY 4.0)";
   sat=MML_API_KEY
@@ -355,6 +351,8 @@ if(window.L){
   document.getElementById("l-map").onclick=()=>setLayer(false);
 } else { document.getElementById("tilenote").hidden=false; }
 function buildMarkers(){if(!map)return;Object.values(markers).forEach(m=>map.removeLayer(m));markers={};
+  map.fitBounds(L.latLngBounds(SITES.map(s=>[s.lat,s.lon])),{padding:[40,40]});
+  map.getContainer().classList.toggle("nolabels",map.getZoom()<9);
   SITES.forEach(s=>{markers[s.id]=L.marker([s.lat,s.lon],{title:s.name}).addTo(map).on("click",()=>{cur=s.id;query="";document.getElementById("q").value="";render();document.getElementById("haku").scrollIntoView({behavior:"smooth"})})})}
 function renderMarkers(){if(!map)return;SITES.forEach(s=>{const v=verdict(s),sel=s.id===cur;
   markers[s.id].setIcon(L.divIcon({className:"",iconSize:[16,16],iconAnchor:[8,8],html:`<div class="pin ${sel?"sel":""}" style="background:${COL[v.c]}"><span class="pin-label">${esc(s.name)}</span></div>`}));
@@ -371,7 +369,7 @@ document.getElementById("q").addEventListener("input",e=>{query=e.target.value;r
 document.getElementById("method").addEventListener("change",e=>{method=e.target.value;render()});
 document.getElementById("age").addEventListener("change",e=>{adult=e.target.value==="adult";render()});
 const ex=document.getElementById("examples");
-["Halistenkoski","Nautelankoski","Paattistenjoki"].forEach((n,i,a)=>{const b=document.createElement("button");b.type="button";b.textContent=n;
+["Vanhankaupunginkoski","Langinkoski","Tornionjoki"].forEach((n,i,a)=>{const b=document.createElement("button");b.type="button";b.textContent=n;
   b.onclick=()=>{const q=document.getElementById("q");q.value=n;query=n;render()};ex.appendChild(b);
   ex.appendChild(document.createTextNode(i<a.length-2?", ":i===a.length-2?" tai ":"."))});
 
