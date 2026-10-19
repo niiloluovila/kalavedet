@@ -165,7 +165,7 @@ footer a{color:#e2c399}
       </svg>
       Kalavesi
     </a>
-    <nav><a href="#haku">Lupahaku</a><a href="#kartta">Kartta</a><a href="#tietoa">Tietoa palvelusta</a></nav>
+    <nav><a href="#haku">Lupahaku</a><a href="kalat.html">Kalat</a><a href="#kartta">Kartta</a><a href="#tietoa">Tietoa</a></nav>
   </div>
 </header>
 
@@ -319,9 +319,11 @@ function renderList(){
   });
   return hits;
 }
+const FISH_PAGE={"lohi": "lohi", "taimen": "taimen", "kirjolohi": "kirjolohi", "puronieriä": "puronieria", "nieriä": "nieria", "harjus": "harjus", "siika": "siika", "muikku": "muikku", "hauki": "hauki", "kuha": "kuha", "ahven": "ahven", "kiiski": "kiiski", "made": "made", "lahna": "lahna", "pasuri": "pasuri", "sulkava": "sulkava", "särki": "sarki", "sorva": "sorva", "säyne": "sayne", "seipi": "seipi", "turpa": "turpa", "toutain": "toutain", "suutari": "suutari", "ruutana": "ruutana", "karppi": "karppi", "mutu": "mutu", "silakka": "silakka", "kuore": "kuore", "turska": "turska", "kampela": "kampela", "härkäsimppu": "harkasimppu", "ankerias": "ankerias", "kolmipiikki": "kolmipiikki", "merilohi": "lohi", "järvilohi": "lohi", "meritaimen": "taimen", "järvitaimen": "taimen"};
+const fishLink=n=>FISH_PAGE[n]?`<a href="kalat.html#${FISH_PAGE[n]}">${esc(n)}</a>`:esc(n);
 function kalasto(s){
   const parts=[];
-  if(s.species) parts.push(`Lupamyyjän ilmoittamat saaliskalat: ${s.species.list.map(esc).join(", ")}`+(s.sources[s.species.source]?` <span class="src">(${esc(s.sources[s.species.source].title.split(":")[0])})</span>`:""));
+  if(s.species) parts.push(`Lupamyyjän ilmoittamat saaliskalat: ${s.species.list.map(fishLink).join(", ")}`+(s.sources[s.species.source]?` <span class="src">(${esc(s.sources[s.species.source].title.split(":")[0])})</span>`:""));
   return parts.length?parts.join("<br>"):`<span class="none">Ei vielä tiedossa</span>`;
 }
 function renderDetail(){

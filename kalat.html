@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Suomen kalat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..900;1,62..125,300..900&display=swap">
+<style>
+/* Layout: kalakirjan kuvataulut. Lajit ryhmittäin, jokaisella oma taulu: kuvitus paperilla, nimi, tunnistus ja säännöt. */
+:root{
+  color-scheme:light;
+  --bg:#f3ede4; --paper:#faf7f1; --ink:#1b3127; --ink-2:#3d5146; --muted:#776f61;
+  --rule:#d9cdbb; --leather:#a5734a; --leather-soft:#ead9c3; --lake:#e5dfd1;
+  --f:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.gutter{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.inner{max-width:1200px;margin:0 auto}
+a{color:inherit;text-decoration-color:var(--leather);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--leather)}
+:focus-visible{outline:2px solid var(--leather);outline-offset:3px}
+
+.top .inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px;border-bottom:1px solid var(--rule)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-stretch:85%;letter-spacing:.14em;text-transform:uppercase;font-size:1rem}
+.logo svg{width:26px;height:26px}
+.top nav{display:flex;gap:28px;font-size:.88rem}
+.top nav a{text-decoration:none;color:var(--ink-2)}
+.top nav a[aria-current="page"]{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--leather)}
+
+.hero .inner{padding-block:64px 36px;display:grid;gap:22px}
+.hero h1{font-weight:800;font-stretch:78%;text-transform:uppercase;font-size:clamp(3rem,8.4vw,7.2rem);line-height:.86;letter-spacing:-.015em;margin:0}
+.hero h1 span{color:var(--leather)}
+.lede{margin:0;max-width:52ch;font-size:1.12rem;color:var(--ink-2)}
+.index{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px 40px;border-top:2px solid var(--ink);padding-top:18px}
+.index h2{margin:0 0 6px;font-size:.82rem;font-weight:600;color:var(--muted)}
+.index ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.index a{font-weight:600}
+
+.group .inner{padding-block:48px 24px;display:grid;gap:28px}
+.group-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:12px}
+.group-head h2{margin:0;font-weight:800;font-stretch:78%;text-transform:uppercase;font-size:clamp(2rem,4.6vw,3.2rem);line-height:.9}
+.group-head p{margin:0;max-width:52ch;color:var(--ink-2)}
+.plates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:860px){.plates{grid-template-columns:1fr}}
+.plate{background:var(--paper);border-top:4px solid var(--ink);display:grid;grid-template-rows:auto 1fr;scroll-margin-top:20px}
+.plate:target{box-shadow:0 0 0 2px var(--leather)}
+.art{background:radial-gradient(ellipse at 50% 55%,#fffdf8 0%,#f4ecdf 100%);border-bottom:1px solid var(--rule);padding:18px;position:relative}
+.art{--mh:180px;min-height:calc(var(--mh) + 44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-sizing:border-box}
+@media (max-width:600px){.art{--mh:130px}}
+.crop{width:min(100%,calc(var(--mh) * var(--r)));aspect-ratio:var(--r);background-color:#efe4cf;background-repeat:no-repeat;mix-blend-mode:multiply}
+.credit{font-size:.68rem;color:var(--muted);text-decoration:none;text-align:center;line-height:1.2}
+.credit:hover{color:var(--leather)}
+.noimg{max-width:34ch;text-align:center;color:var(--muted);font-size:.9rem}
+.art .cap{position:absolute;left:18px;bottom:8px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.txt{padding:24px clamp(18px,3vw,32px) 26px;display:grid;gap:14px;align-content:start}
+.name h3{margin:0;font-weight:800;font-stretch:80%;text-transform:uppercase;font-size:2rem;line-height:.95}
+.name em{color:var(--muted);font-size:.95rem}
+.txt p{margin:0;max-width:62ch}
+.txt p b{font-weight:600}
+.rules{margin:4px 0 0;border-top:2px solid var(--ink)}
+.rules div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:.93rem}
+@media (max-width:480px){.rules div{grid-template-columns:1fr;gap:0}}
+.rules dt{color:var(--muted)}
+.rules dd{margin:0}
+.rules .none{color:#a99d89}
+
+footer{background:var(--ink);color:#c8c1b1;font-size:.88rem;margin-top:48px}
+footer .inner{padding-block:56px 64px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:32px;border-top:1.5px dashed rgba(196,160,118,.45)}
+@media (max-width:700px){footer .inner{grid-template-columns:1fr}}
+footer .flogo{font-weight:800;font-stretch:85%;letter-spacing:.14em;text-transform:uppercase;color:#f3ede4}
+footer p{margin:0 0 10px;max-width:62ch}
+footer a{color:#e2c399}
+@media (max-width:600px){.top nav{gap:18px}}
+</style>
+
+</head>
+<body>
+<header class="top gutter">
+  <div class="inner">
+    <a class="logo" href="index.html" aria-label="Kalavesi, etusivu">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M27 9 C 27 22, 26 30, 19 32 C 13 34, 11 29, 14 27" fill="none" stroke="#1b3127" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="27" cy="7.5" r="2" fill="none" stroke="#1b3127" stroke-width="1.8"/>
+        <path d="M26 12 C 18 9, 10 11, 6 17 C 13 16, 20 16, 26 17 Z" fill="#a5734a"/>
+        <path d="M26 15 C 19 15, 12 19, 9 24 C 15 21, 21 20, 26 19 Z" fill="#1b3127" opacity=".8"/>
+      </svg>
+      Kalavesi
+    </a>
+    <nav><a href="index.html">Lupahaku</a><a href="kalat.html" aria-current="page">Kalat</a><a href="#tietoa">Tietoa</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero gutter">
+    <div class="inner">
+      <h1>Suomen <span>kalat</span></h1>
+      <p class="lede">33 kalastajalle tärkeää lajia: miten ne tunnistaa, missä ne elävät, miten niitä kalastetaan ja mitkä alamitat ja rauhoitukset niitä koskevat.</p>
+      <nav class="index" id="index" aria-label="Lajit"></nav>
+    </div>
+  </section>
+  <div id="groups"></div>
+</main>
+
+<footer class="gutter" id="tietoa">
+  <div class="inner">
+    <div class="flogo">Kalavesi</div>
+    <div>
+      <p>Alamitat ja rauhoitusajat ovat valtakunnallisia (valtioneuvoston asetus kalastuksesta 1360/2015 muutoksineen, koottu <a href="https://suomenkalat.fi/alamitat-ja-rauhoitusajat/" target="_blank" rel="noopener">Suomenkalat.fi</a>-sivulta, tarkistettu 27.7.2026). Alueelliset säännöt voivat olla tiukempia, joten tarkista kohteen säännöt Lupahausta ja <a href="https://kalastusrajoitus.fi/#/kalastusrajoitus" target="_blank" rel="noopener">Kalastusrajoitus.fi</a>:stä.</p>
+      <p>Kuvat: <a href="https://commons.wikimedia.org/wiki/Category:A_history_of_Scandinavian_fishes" target="_blank" rel="noopener">A History of Scandinavian Fishes</a> (Fries, Ekström ja Sundevall, 2. painos 1892–95, kuvittajana mm. Wilhelm von Wright), kirjolohi ja puronieriä Sherman F. Dentonin maalauksista (1896). Kuvat ovat vapaita tekijänoikeuksista (public domain), ja ne on haettu Wikimedia Commonsista. Kuvien vanhat tieteelliset nimet voivat poiketa nykyisistä.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- lajit ---------- */
+const NONE='<span class="none">Ei valtakunnallista</span>';
+const GROUPS=[
+{
+"id": "lohikalat",
+"name": "Lohikalat",
+"desc": "Tunnistat ryhmän selkäevän takana olevasta pienestä rasvaevästä. Leikattu rasvaevä tarkoittaa istutettua kalaa.",
+"species": [
+{
+"id": "lohi",
+"name": "Lohi",
+"sci": "Salmo salar",
+"look": "Hopeakylkinen ja virtaviivainen. Pyrstönvarsi on kapea ja pyrstö hieman lovettu. Mustia, usein x:n muotoisia pilkkuja on lähinnä kylkiviivan yläpuolella.",
+"live": "Vaelluskala, joka kasvaa meressä ja nousee kutemaan jokiin. Kutu syksyllä. Saimaan järvilohi on sisävesiin jäänyt muoto.",
+"fish": "Jokikalastus vieheellä ja perholla nousuaikaan alkukesästä, merellä vetouistelu.",
+"min": "60 cm. Perämerellä 63°30′ pohjoispuolella 50 cm. Järvilohi 60 cm.",
+"rest": "Joissa ja puroissa 1.9.–30.11. Järvilohi joissa ja puroissa 1.8.–30.11., ja rasvaevällinen järvilohi on rauhoitettu Vuoksen ja Hiitolanjoen vesistöissä."
+},
+{
+"id": "taimen",
+"name": "Taimen",
+"sci": "Salmo trutta",
+"look": "Mustia ja punaisia pilkkuja myös kylkiviivan alapuolella, punaisissa usein vaalea reunus. Pyrstö on lähes suora. Esiintyy meri-, järvi- ja purotaimenena.",
+"live": "Virtavedet, järvet ja rannikko. Kutee syksyllä soraisilla virtapaikoilla. Luonnonvaraiset kannat ovat monin paikoin heikkoja.",
+"fish": "Viehe- ja perhokalastus virtapaikoilla, järvillä uistelu.",
+"min": "Rasvaeväleikattu 50 cm. Rasvaevällinen 60 cm, 67°00′ pohjoispuolella 50 cm.",
+"rest": "Rasvaevällinen rauhoitettu meressä ja sisävesissä 64°00′ eteläpuolella. Joissa ja puroissa kaikki taimenet 1.9.–30.11."
+},
+{
+"id": "kirjolohi",
+"name": "Kirjolohi",
+"sci": "Oncorhynchus mykiss",
+"look": "Kylkiä pitkin kulkee punertava juova, ja tiheitä mustia pilkkuja on myös selkäevässä ja pyrstössä.",
+"live": "Pohjois-Amerikasta tuotu laji, jota kasvatetaan ja istutetaan. Ei juuri lisäänny Suomessa luonnossa.",
+"fish": "Suosittu istutuskohteissa ja kalastuspuistoissa, vieheellä, perholla ja pilkillä.",
+"min": "",
+"rest": ""
+},
+{
+"id": "puronieria",
+"name": "Puronieriä",
+"sci": "Salvelinus fontinalis",
+"look": "Tumma selkä, jossa vaalea madonkuvio. Kyljissä keltaisia ja punaisia, sinikehäisiä täpliä. Vatsa-, rinta- ja peräevien etureunassa valkoinen ja musta raita.",
+"live": "Pohjois-Amerikasta tuotu laji, jota istutetaan pieniin järviin, lampiin ja puroihin. Viihtyy kylmässä vedessä.",
+"fish": "Pienet lusikat, perho ja pilkki istutuskohteissa.",
+"min": "",
+"rest": ""
+},
+{
+"id": "nieria",
+"name": "Nieriä",
+"sci": "Salvelinus alpinus",
+"look": "Kyljet harmaat tai vihertävät vaalein täplin, kutuaikana vatsa kirkkaan punainen. Vatsa- ja peräevien etureunat valkoiset.",
+"live": "Kylmät, syvät ja kirkkaat järvet, kuten Inarijärvi ja Saimaa. Saimaan nieriä on hyvin harvinainen, ja kantaa tuetaan istutuksin.",
+"fish": "Syvältä uistellen ja pilkkien, Lapissa myös heittäen.",
+"min": "Vuoksen vesistössä 60 cm, Inarijärvessä 45 cm.",
+"rest": "Kokonaan rauhoitettu Kuolimossa ja Saimaalla Puumalansalmen ja Vuoksenniskan välillä. Muualla Vuoksen vesistössä 1.9.–30.11."
+},
+{
+"id": "harjus",
+"name": "Harjus",
+"sci": "Thymallus thymallus",
+"look": "Iso, purjemainen ja kirjava selkäevä. Pieni suu ja tummia pilkkuja kylkien etuosassa.",
+"live": "Kirkkaat, virtaavat joet ja Pohjois-Suomen järvet. Kutee keväällä.",
+"fish": "Erinomainen perhokala, myös kevyt heittokalastus pienillä vieheillä.",
+"min": "35 cm sisävesissä, 67°00′ pohjoispuolella 30 cm.",
+"rest": "Rauhoitettu meressä kokonaan. Sisävesissä 67°00′ eteläpuolella 1.4.–31.5."
+},
+{
+"id": "siika",
+"name": "Siika",
+"sci": "Coregonus lavaretus",
+"look": "Hopeinen, pieni pää ja pieni suu. Kuono on tylppä, evät tummahkot ja pyrstö syvästi lovettu.",
+"live": "Monimuotoinen laji: vaellussiikaa, järvisiikaa ja planktonsiikaa. Kutee syksyllä.",
+"fish": "Perholla ja pienillä vieheillä virtapaikoilla, talvella pilkkien.",
+"min": "",
+"rest": "Mereen laskevissa joissa ja puroissa 1.9.–30.11."
+},
+{
+"id": "muikku",
+"name": "Muikku",
+"sci": "Coregonus albula",
+"look": "Pieni, kapea ja hopeinen parvikala. Alaleuka työntyy yläleukaa pidemmälle.",
+"live": "Kirkasvetiset, syvät järvet. Kutee syksyllä. Tärkeä saaliskala järvillä.",
+"fish": "Pääosin nuottaus ja verkot, vapaa-ajankalastuksessa myös pilkki.",
+"min": "",
+"rest": ""
+}
+]
+},
+{
+"id": "petokalat",
+"name": "Hauki, ahvenkalat ja made",
+"desc": "Järvien ja rannikon tavallisimmat petokalat ja vapakalastajan perussaaliit.",
+"species": [
+{
+"id": "hauki",
+"name": "Hauki",
+"sci": "Esox lucius",
+"look": "Pitkä ja litteä kuono, hampaikas suu. Selkä- ja peräevä ovat aivan pyrstön edessä. Vihertävä kylki, jossa vaaleita täpliä tai juovia.",
+"live": "Kaikkialla Suomessa järvissä, joissa ja rannikolla. Kutee heti jäiden lähdettyä matalilla rannoilla.",
+"fish": "Heitto- ja vetouistelu, pilkintä ja onginta syötillä. Käytä teräsperuketta.",
+"min": "",
+"rest": ""
+},
+{
+"id": "kuha",
+"name": "Kuha",
+"sci": "Sander lucioperca",
+"look": "Pitkähkö ja harmaanvihreä, epäselviä tummia poikkivöitä. Kaksi selkäevää, joista etummainen on piikkinen. Suuret, lasimaiset silmät ja terävät hampaat.",
+"live": "Sameat, rehevät järvet ja rannikko. Liikkuu hämärässä.",
+"fish": "Vetouistelu, jigit ja heittouistelu, talvella pilkki.",
+"min": "42 cm (vapaa-ajankalastus).",
+"rest": ""
+},
+{
+"id": "ahven",
+"name": "Ahven",
+"sci": "Perca fluviatilis",
+"look": "Vihreäkeltainen kylki, jossa 5–8 tummaa poikkijuovaa. Etummainen selkäevä on piikkinen, ja sen takaosassa on musta laikku. Vatsa- ja peräevät ovat oranssinpunaiset.",
+"live": "Suomen yleisimpiä kaloja lähes kaikissa vesissä. Kutee keväällä.",
+"fish": "Onki, pilkki, heittovieheet ja jigit. Hyvä kala aloittelijalle.",
+"min": "",
+"rest": ""
+},
+{
+"id": "kiiski",
+"name": "Kiiski",
+"sci": "Gymnocephalus cernua",
+"look": "Pieni ja limainen. Selkäevä on yhtenäinen, ja sen etuosa on piikkinen. Kylki ruskea ja tummatäpläinen.",
+"live": "Järvien ja rannikon pohjilla, hyvin yleinen.",
+"fish": "Tulee usein ongella ja pilkillä sivusaaliina.",
+"min": "",
+"rest": ""
+},
+{
+"id": "made",
+"name": "Made",
+"sci": "Lota lota",
+"look": "Pitkä ja limainen, ruskeanmarmoroitu. Leuan alla yksi parrasjouhi. Lyhyt etummainen ja pitkä takimmainen selkäevä sekä pyöreä pyrstö.",
+"live": "Ainoa makean veden turskakala. Viihtyy kylmässä vedessä ja kutee keskellä talvea jään alla.",
+"fish": "Pohjaonget ja koukut talvella, pilkintä pohjan tuntumassa.",
+"min": "",
+"rest": ""
+}
+]
+},
+{
+"id": "sarkikalat",
+"name": "Särkikalat",
+"desc": "Suurin kalaheimomme. Monet lajit ovat ongen ja syöttikalastuksen perussaaliita.",
+"species": [
+{
+"id": "lahna",
+"name": "Lahna",
+"sci": "Abramis brama",
+"look": "Korkea ja kylkiä myöten litteä. Aikuisena pronssinen, evät tummat ja peräevä pitkä.",
+"live": "Rehevät järvet, joet ja rannikon lahdet. Elää parvissa pohjan tuntumassa ja kutee alkukesällä.",
+"fish": "Pohjaonget ja kohot syöttiä käyttäen, syöttöpaikoilla.",
+"min": "",
+"rest": ""
+},
+{
+"id": "pasuri",
+"name": "Pasuri",
+"sci": "Blicca bjoerkna",
+"look": "Lahnan näköinen mutta pienempi. Silmä on suhteessa suurempi, ja rinta- ja vatsaevien tyvi on punertava.",
+"live": "Rehevät järvet ja rannikon lahdet, parvissa.",
+"fish": "Onki ja pohjaonki.",
+"min": "",
+"rest": ""
+},
+{
+"id": "sulkava",
+"name": "Sulkava",
+"sci": "Ballerus ballerus",
+"look": "Lahnaa solakampi ja ohuempi, pitkä peräevä ja pieni, hieman ylöspäin suuntautuva suu.",
+"live": "Suuret järvet ja joet Etelä- ja Keski-Suomessa. Melko harvinainen.",
+"fish": "Onki, saadaan usein lahnan seasta.",
+"min": "",
+"rest": ""
+},
+{
+"id": "sarki",
+"name": "Särki",
+"sci": "Rutilus rutilus",
+"look": "Hopeinen ja punasilmäinen. Vatsa- ja peräevät ovat punertavat.",
+"live": "Suomen yleisin kala järvissä, joissa ja rannikolla. Kutee keväällä matalikoilla.",
+"fish": "Onginta ja pilkintä. Tärkeä syöttikala.",
+"min": "",
+"rest": ""
+},
+{
+"id": "sorva",
+"name": "Sorva",
+"sci": "Scardinius erythrophthalmus",
+"look": "Kultakylkinen, evät kirkkaanpunaiset. Selkäevä alkaa selvästi vatsaevien takaa, ja suu on viistosti ylöspäin.",
+"live": "Rehevät, kasvillisuuspitoiset rannat Etelä-Suomessa.",
+"fish": "Onki kasvillisuuden reunoilta.",
+"min": "",
+"rest": ""
+},
+{
+"id": "sayne",
+"name": "Säyne",
+"sci": "Leuciscus idus",
+"look": "Tukeva ja hopeisesta kultaiseen. Evät punertavat, suu pieni.",
+"live": "Joet, järvet ja rannikko. Nousee keväällä kutemaan virtapaikoille.",
+"fish": "Onki, perho ja kevyet vieheet, erityisesti kevään kutunousun aikaan.",
+"min": "",
+"rest": ""
+},
+{
+"id": "seipi",
+"name": "Seipi",
+"sci": "Leuciscus leuciscus",
+"look": "Hoikka ja hopeinen, pieni suu ja kellertävät evät. Peräevän reuna on hieman kovera.",
+"live": "Virtaavat vedet ja suurten järvien rannat.",
+"fish": "Onki ja kevyt perho virtapaikoilla.",
+"min": "",
+"rest": ""
+},
+{
+"id": "turpa",
+"name": "Turpa",
+"sci": "Squalius cephalus",
+"look": "Paksu ja lähes lieriömäinen, leveä pää ja iso suu. Suomut suuret ja tummareunaiset, peräevä kupera ja punertava.",
+"live": "Joet ja virtapaikat. Suomessa paikallinen.",
+"fish": "Perho ja pienet vieheet virtapaikoilla.",
+"min": "",
+"rest": ""
+},
+{
+"id": "toutain",
+"name": "Toutain",
+"sci": "Leuciscus aspius",
+"look": "Pitkä ja hopeinen särkikala, jolla on poikkeuksellisen iso suu.",
+"live": "Särkikaloista ainoa varsinainen peto. Isot joet ja virtapaikat, kuten Kymijoki.",
+"fish": "Pintavieheet ja perho virtapaikoilla, saalistaa pikkukaloja pinnassa.",
+"min": "",
+"rest": ""
+},
+{
+"id": "suutari",
+"name": "Suutari",
+"sci": "Tinca tinca",
+"look": "Paksu, tummanvihreä ja limainen. Suomut pienet, silmät punaiset ja suupielissä lyhyet viikset.",
+"live": "Lämpimät, rehevät ja mutapohjaiset vedet Etelä-Suomessa.",
+"fish": "Pohjaonki kesäöinä kasvillisuuden reunoilla.",
+"min": "",
+"rest": ""
+},
+{
+"id": "ruutana",
+"name": "Ruutana",
+"sci": "Carassius carassius",
+"look": "Korkea ja paksu, pronssinvihreä. Ei viiksiä, pyrstö lähes suora.",
+"live": "Kestää hapettomuutta, joten elää pienissäkin lammissa.",
+"fish": "Onki ja pohjaonki.",
+"min": "",
+"rest": ""
+},
+{
+"id": "karppi",
+"name": "Karppi",
+"sci": "Cyprinus carpio",
+"look": "Isot suomut ja pitkä selkäevä. Suupielissä kaksi viiksiparia.",
+"live": "Tuotu laji, jota kasvatetaan lammikoissa. Lisääntyy Suomessa luonnossa vain harvoin.",
+"fish": "Pohjaonki, syöttinä esimerkiksi maissi.",
+"min": "",
+"rest": ""
+},
+{
+"id": "mutu",
+"name": "Mutu",
+"sci": "Phoxinus phoxinus",
+"look": "Pieni, yleensä alle 10 cm. Kirjava, ja koiraiden vatsa on kutuaikana punainen.",
+"live": "Kirkkaat, viileät purot, joet ja järvien rannat.",
+"fish": "Syöttikala.",
+"min": "",
+"rest": ""
+}
+]
+},
+{
+"id": "meri",
+"name": "Rannikon ja meren kalat",
+"desc": "Itämeren murtovedessä elävät lajit sekä muutama erityistapaus.",
+"species": [
+{
+"id": "silakka",
+"name": "Silakka",
+"sci": "Clupea harengus membras",
+"look": "Hopeinen ja sinivihreäselkäinen, vatsassa terävä harja. Silakka on Itämeren silli.",
+"live": "Itämeren tärkein saaliskala. Elää suurissa parvissa.",
+"fish": "Litkaus eli pilkintä monikoukkuisella perukkeella keväällä ja syksyllä.",
+"min": "",
+"rest": ""
+},
+{
+"id": "kuore",
+"name": "Kuore",
+"sci": "Osmerus eperlanus",
+"look": "Pieni, hoikka ja läpikuultava. Suuri suu ja rasvaevä. Tuore kuore tuoksuu kurkulta.",
+"live": "Järvet ja rannikko. Kutee keväällä heti jäidenlähdön jälkeen.",
+"fish": "Pyydetään pääosin rysillä ja nuotalla. Tärkeä ravintokala petokaloille.",
+"min": "",
+"rest": ""
+},
+{
+"id": "turska",
+"name": "Turska",
+"sci": "Gadus morhua",
+"look": "Kirjava ruskeanvihreä, leuassa parrasjouhi ja kolme selkäevää.",
+"live": "Itämeren eteläosat. Suomen vesillä harvinaistunut.",
+"fish": "Kohdennettu kalastus on EU:n säännöillä kielletty tai tiukasti rajoitettu.",
+"min": "EU:n Itämeren säännöt, katso Kalastusrajoitus.fi.",
+"rest": "Kohdennettu kalastus Itämerellä kielletty tai tiukasti rajoitettu."
+},
+{
+"id": "kampela",
+"name": "Kampela",
+"sci": "Platichthys flesus",
+"look": "Litteä kala, jonka molemmat silmät ovat samalla puolella. Yläpuoli ruskea, kylkiviivan varrella karheita nystyjä.",
+"live": "Rannikon hiekka- ja mutapohjat.",
+"fish": "Pohjaonki ja pilkki.",
+"min": "EU:n Itämeren alamitat, katso Kalastusrajoitus.fi.",
+"rest": ""
+},
+{
+"id": "harkasimppu",
+"name": "Härkäsimppu",
+"sci": "Myoxocephalus quadricornis",
+"look": "Leveä pää, jossa neljä luista kyhmyä. Piikikkäät evät ja ruskean kirjava kylki.",
+"live": "Rannikon ja suurten järvien pohjat. Sisävesissä jääkauden jäänne.",
+"fish": "Sivusaalis pilkillä ja ongella.",
+"min": "",
+"rest": ""
+},
+{
+"id": "ankerias",
+"name": "Ankerias",
+"sci": "Anguilla anguilla",
+"look": "Käärmemäinen. Selkä-, pyrstö- ja peräevä muodostavat yhtenäisen evän.",
+"live": "Kutee Sargassomerellä. Saapuu Suomeen pienenä ja voi elää vesissämme vuosikymmeniä. Laji on uhanalainen.",
+"fish": "Kalastus on käytännössä kielletty, katso rauhoitus.",
+"min": "",
+"rest": "Sisävesissä 1.8.–30.6., eli kalastus on sallittu vain heinäkuussa. Vapaa-ajankalastus merialueella kielletty ympäri vuoden."
+},
+{
+"id": "kolmipiikki",
+"name": "Kolmipiikki",
+"sci": "Gasterosteus aculeatus",
+"look": "Pieni, selässä kolme irrallista piikkiä. Koiraan kurkku on kutuaikana punainen.",
+"live": "Rannikko ja järvet. Koiras rakentaa pesän ja vartioi sitä.",
+"fish": "Ei kalastuskohde, mutta tärkeä ravintokala.",
+"min": "",
+"rest": ""
+}
+]
+}
+];
+
+/* ---------- kuvat (Wikimedia Commons, public domain) ---------- */
+const IMG={"lohi": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/A_history_of_Scandinavian_fishes_%2810595106365%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595106365%29.jpg", "w": 1391, "h": 1868, "crop": [0.13, 0.09, 0.9, 0.285], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595106365).jpg", "by": "wright"}, "taimen": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/A_history_of_Scandinavian_fishes_%2810595124256%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595124256%29.jpg", "w": 1391, "h": 1868, "crop": [0.12, 0.13, 0.88, 0.335], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595124256).jpg", "by": "wright"}, "kirjolohi": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Denton_Rainbow_Trout_1896.png/960px-Denton_Rainbow_Trout_1896.png", "w": 6600, "h": 4800, "crop": [0.02, 0.19, 0.97, 0.74], "page": "https://commons.wikimedia.org/wiki/File:Denton_Rainbow_Trout_1896.png", "by": "denton"}, "puronieria": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Denton_Brook_Trout_1896.png/960px-Denton_Brook_Trout_1896.png", "w": 6600, "h": 4800, "crop": [0.02, 0.17, 0.985, 0.77], "page": "https://commons.wikimedia.org/wiki/File:Denton_Brook_Trout_1896.png", "by": "denton"}, "nieria": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/A_history_of_Scandinavian_fishes_%2810595133504%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595133504%29.jpg", "w": 1391, "h": 1868, "crop": [0.14, 0.095, 0.88, 0.29], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595133504).jpg", "by": "wright"}, "harjus": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/A_history_of_Scandinavian_fishes_%2810595114885%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595114885%29.jpg", "w": 1391, "h": 1868, "crop": [0.16, 0.08, 0.84, 0.29], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595114885).jpg", "by": "wright"}, "siika": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/A_history_of_Scandinavian_fishes_%2810595114885%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595114885%29.jpg", "w": 1391, "h": 1868, "crop": [0.15, 0.43, 0.85, 0.625], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595114885).jpg", "by": "wright"}, "muikku": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/A_history_of_Scandinavian_fishes_%2810595114885%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595114885%29.jpg", "w": 1391, "h": 1868, "crop": [0.28, 0.295, 0.72, 0.405], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595114885).jpg", "by": "wright"}, "hauki": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/A_history_of_Scandinavian_fishes_%2810595148094%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595148094%29.jpg", "w": 1391, "h": 1868, "crop": [0.19, 0.14, 0.82, 0.3], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595148094).jpg", "by": "wright"}, "kuha": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A_history_of_Scandinavian_fishes_%289661320885%29.jpg/960px-A_history_of_Scandinavian_fishes_%289661320885%29.jpg", "w": 1374, "h": 1793, "crop": [0.13, 0.33, 0.85, 0.54], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9661320885).jpg", "by": "wright"}, "ahven": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A_history_of_Scandinavian_fishes_%289661320885%29.jpg/960px-A_history_of_Scandinavian_fishes_%289661320885%29.jpg", "w": 1374, "h": 1793, "crop": [0.2, 0.11, 0.77, 0.305], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9661320885).jpg", "by": "wright"}, "kiiski": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A_history_of_Scandinavian_fishes_%289661320885%29.jpg/960px-A_history_of_Scandinavian_fishes_%289661320885%29.jpg", "w": 1374, "h": 1793, "crop": [0.265, 0.6, 0.715, 0.785], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9661320885).jpg", "by": "wright"}, "made": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/A_history_of_Scandinavian_fishes_%289664582740%29.jpg/960px-A_history_of_Scandinavian_fishes_%289664582740%29.jpg", "w": 1374, "h": 1793, "crop": [0.11, 0.125, 0.91, 0.315], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9664582740).jpg", "by": "wright"}, "lahna": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/A_history_of_Scandinavian_fishes_%2810595126714%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595126714%29.jpg", "w": 1391, "h": 1868, "crop": [0.12, 0.455, 0.9, 0.81], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595126714).jpg", "by": "wright"}, "pasuri": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/A_history_of_Scandinavian_fishes_%2810595128774%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595128774%29.jpg", "w": 1391, "h": 1868, "crop": [0.16, 0.335, 0.81, 0.6], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595128774).jpg", "by": "wright"}, "sulkava": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/A_history_of_Scandinavian_fishes_%2810595126714%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595126714%29.jpg", "w": 1391, "h": 1868, "crop": [0.18, 0.15, 0.81, 0.415], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595126714).jpg", "by": "wright"}, "sarki": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/A_history_of_Scandinavian_fishes_%2810595357483%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595357483%29.jpg", "w": 1391, "h": 1868, "crop": [0.17, 0.15, 0.84, 0.4], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595357483).jpg", "by": "wright"}, "sorva": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/A_history_of_Scandinavian_fishes_%2810595357483%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595357483%29.jpg", "w": 1391, "h": 1868, "crop": [0.21, 0.43, 0.77, 0.65], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595357483).jpg", "by": "wright"}, "sayne": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/A_history_of_Scandinavian_fishes_%2810595355253%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595355253%29.jpg", "w": 1391, "h": 1868, "crop": [0.13, 0.095, 0.89, 0.33], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595355253).jpg", "by": "wright"}, "seipi": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/A_history_of_Scandinavian_fishes_%2810595355253%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595355253%29.jpg", "w": 1391, "h": 1868, "crop": [0.08, 0.32, 0.93, 0.58], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595355253).jpg", "by": "wright"}, "turpa": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/A_history_of_Scandinavian_fishes_%2810595355253%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595355253%29.jpg", "w": 1391, "h": 1868, "crop": [0.14, 0.58, 0.88, 0.82], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595355253).jpg", "by": "wright"}, "toutain": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/A_history_of_Scandinavian_fishes_%2810595364123%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595364123%29.jpg", "w": 1391, "h": 1868, "crop": [0.13, 0.3, 0.89, 0.57], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595364123).jpg", "by": "wright"}, "suutari": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/A_history_of_Scandinavian_fishes_%2810595126236%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595126236%29.jpg", "w": 1391, "h": 1868, "crop": [0.19, 0.595, 0.8, 0.87], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595126236).jpg", "by": "wright"}, "ruutana": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/A_history_of_Scandinavian_fishes_%2810595087385%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595087385%29.jpg", "w": 1856, "h": 1391, "crop": [0.08, 0.42, 0.525, 0.83], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595087385).jpg", "by": "wright"}, "karppi": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/A_history_of_Scandinavian_fishes_%2810595119294%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595119294%29.jpg", "w": 1856, "h": 1391, "crop": [0.28, 0.36, 0.75, 0.66], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595119294).jpg", "by": "wright"}, "mutu": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/A_history_of_Scandinavian_fishes_%2810595357483%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595357483%29.jpg", "w": 1391, "h": 1868, "crop": [0.19, 0.69, 0.46, 0.785], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595357483).jpg", "by": "wright"}, "silakka": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/A_history_of_Scandinavian_fishes_%2810595148094%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595148094%29.jpg", "w": 1391, "h": 1868, "crop": [0.08, 0.53, 0.955, 0.755], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595148094).jpg", "by": "wright"}, "kuore": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/A_history_of_Scandinavian_fishes_%2810595126236%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595126236%29.jpg", "w": 1391, "h": 1868, "crop": [0.16, 0.1, 0.81, 0.24], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595126236).jpg", "by": "wright"}, "turska": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/A_history_of_Scandinavian_fishes_%289664579556%29.jpg/960px-A_history_of_Scandinavian_fishes_%289664579556%29.jpg", "w": 1374, "h": 1793, "crop": [0.14, 0.1, 0.88, 0.3], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9664579556).jpg", "by": "wright"}, "kampela": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/A_history_of_Scandinavian_fishes_%289664576354%29.jpg/960px-A_history_of_Scandinavian_fishes_%289664576354%29.jpg", "w": 1374, "h": 1793, "crop": [0.21, 0.15, 0.79, 0.43], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9664576354).jpg", "by": "wright"}, "harkasimppu": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/A_history_of_Scandinavian_fishes_%289661326031%29.jpg/960px-A_history_of_Scandinavian_fishes_%289661326031%29.jpg", "w": 1374, "h": 1793, "crop": [0.165, 0.14, 0.8, 0.31], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(9661326031).jpg", "by": "wright"}, "ankerias": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/A_history_of_Scandinavian_fishes_%2810595151034%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595151034%29.jpg", "w": 1391, "h": 1868, "crop": [0.12, 0.2, 0.93, 0.345], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595151034).jpg", "by": "wright"}, "kolmipiikki": {"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/A_history_of_Scandinavian_fishes_%2810595083485%29.jpg/960px-A_history_of_Scandinavian_fishes_%2810595083485%29.jpg", "w": 1378, "h": 1787, "crop": [0.09, 0.12, 0.39, 0.21], "page": "https://commons.wikimedia.org/wiki/File:A_history_of_Scandinavian_fishes_(10595083485).jpg", "by": "wright"}};
+const CREDIT={wright:"A History of Scandinavian Fishes (1892–95), kuvittajana mm. Wilhelm von Wright",denton:"Sherman F. Denton, New Yorkin kalastuskomission raportti (1896)"};
+function plateImg(sp){
+  const m=IMG[sp.id];
+  if(!m) return `<div class="noimg">Vanhoissa kalakirjoissa ei ole kuvaa, koska laji tuotiin Suomeen vasta 1900-luvulla.</div>`;
+  const [x0,y0,x1,y1]=m.crop,cw=x1-x0,ch=y1-y0;
+  const pos=(a,c)=>(c>=1?0:a/(1-c)*100).toFixed(2)+"%";
+  return `<div class="crop" role="img" aria-label="Kuva: ${sp.name}" style="--r:${(cw*m.w/(ch*m.h)).toFixed(3)};background-image:url('${m.src}');background-size:${(100/cw).toFixed(2)}% auto;background-position:${pos(x0,cw)} ${pos(y0,ch)}"></div>
+    <a class="credit" href="${m.page}" target="_blank" rel="noopener">${CREDIT[m.by]} · public domain</a>`;
+}
+
+/* ---------- sivu ---------- */
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.getElementById("index").innerHTML=GROUPS.map(g=>`<div><h2>${g.name}</h2><ul>${g.species.map(s=>`<li><a href="#${s.id}">${s.name}</a></li>`).join("")}</ul></div>`).join("");
+document.getElementById("groups").innerHTML=GROUPS.map(g=>`
+  <section class="group gutter" id="${g.id}" aria-labelledby="h-${g.id}"><div class="inner">
+    <div class="group-head"><h2 id="h-${g.id}">${g.name}</h2><p>${g.desc}</p></div>
+    <div class="plates">${g.species.map(s=>`
+      <article class="plate" id="${s.id}">
+        <div class="art">${plateImg(s)}</div>
+        <div class="txt">
+          <div class="name"><h3>${s.name}</h3><em>${s.sci}</em></div>
+          <p><b>Tunnistat:</b> ${esc(s.look)}</p>
+          <p><b>Elää:</b> ${esc(s.live)}</p>
+          <p><b>Kalastus:</b> ${esc(s.fish)}</p>
+          <dl class="rules">
+            <div><dt>Alamitta</dt><dd>${s.min?esc(s.min):NONE}</dd></div>
+            <div><dt>Rauhoitus</dt><dd>${s.rest?esc(s.rest):NONE}</dd></div>
+          </dl>
+        </div>
+      </article>`).join("")}</div>
+  </div></section>`).join("");
+if(location.hash){const el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView()}
+</script>
+
+</body>
+</html>
