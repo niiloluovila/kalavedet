@@ -4,11 +4,12 @@
   {
    "id": "aurajoki-turku",
    "name": "Aurajoki, Turun keskusta",
+   "river": "Aurajoki",
    "aliases": [
     "aurajoki",
     "aura",
     "turku",
-    "tuomiokirkko"
+    "varsinais-suomi"
    ],
    "kind": "Hidas virta-alue",
    "municipality": "Turku",
@@ -23,6 +24,12 @@
      "source": 0
     }
    ],
+   "rules": [
+    {
+     "text": "Verkkokalastus on kielletty koko joessa.",
+     "source": 0
+    }
+   ],
    "sources": [
     {
      "title": "Aurajokisäätiö: Kalastus Aurajoella",
@@ -33,10 +40,11 @@
   {
    "id": "halistenkoski",
    "name": "Halistenkoski",
+   "river": "Aurajoki",
    "aliases": [
     "halinen",
-    "halisten koski",
-    "aurajoki"
+    "aurajoki",
+    "turku"
    ],
    "kind": "Koskialue",
    "municipality": "Turku",
@@ -50,6 +58,9 @@
      "seller": "Kalakortti.com",
      "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp",
      "price": null,
+     "methods": [
+      "viehe"
+     ],
      "source": 1
     }
    ],
@@ -59,13 +70,19 @@
      "source": 1
     }
    ],
+   "rules": [
+    {
+     "text": "Verkkokalastus on kielletty koko joessa.",
+     "source": 0
+    }
+   ],
    "sources": [
     {
      "title": "Aurajokisäätiö: Kalastus Aurajoella",
      "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"
     },
     {
-     "title": "Kalakortti.com: virtavesien viehekalastusluvat",
+     "title": "Kalakortti.com: Virtavesien viehekalastusluvat",
      "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"
     }
    ]
@@ -73,13 +90,14 @@
   {
    "id": "nautelankoski",
    "name": "Nautelankoski",
+   "river": "Aurajoki",
    "aliases": [
     "nautela",
     "lieto",
     "aurajoki",
     "perho"
    ],
-   "kind": "Koskialue · perhokalastus",
+   "kind": "Koskialue, perhokalastus",
    "municipality": "Lieto",
    "lat": 60.5588,
    "lon": 22.4387,
@@ -91,6 +109,9 @@
      "seller": "Kalakortti.com",
      "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp",
      "price": null,
+     "methods": [
+      "viehe"
+     ],
      "source": 1
     }
    ],
@@ -100,13 +121,19 @@
      "source": 0
     }
    ],
+   "rules": [
+    {
+     "text": "Verkkokalastus on kielletty koko joessa.",
+     "source": 0
+    }
+   ],
    "sources": [
     {
      "title": "Aurajokisäätiö: Kalastus Aurajoella",
      "url": "https://aurajoki.net/ajankohtaista/kalastus-aurajoella/"
     },
     {
-     "title": "Kalakortti.com: virtavesien viehekalastusluvat",
+     "title": "Kalakortti.com: Virtavesien viehekalastusluvat",
      "url": "https://www.kalakortti.com/mob_luvan_tilaus/Default_Stream.asp"
     }
    ]
@@ -114,19 +141,339 @@
   {
    "id": "paattistenjoki",
    "name": "Paattistenjoki",
+   "river": "Aurajoki",
    "aliases": [
     "paattinen",
-    "auvainen"
+    "aurajoki"
    ],
    "kind": "Sivujoki",
-   "municipality": "Turku, Paattinen",
+   "municipality": "Turku",
    "lat": 60.5736,
    "lon": 22.3512,
    "rapids": false,
    "nets_banned": false,
    "permits": [],
    "closures": [],
+   "rules": [],
    "sources": []
+  },
+  {
+   "id": "vanhankaupunginkoski",
+   "name": "Vanhankaupunginkoski",
+   "river": "Vantaanjoki",
+   "aliases": [
+    "vantaanjoki",
+    "vanhakaupunki",
+    "helsinki",
+    "arabianranta"
+   ],
+   "kind": "Koskialue",
+   "municipality": "Helsinki",
+   "lat": 60.2164,
+   "lon": 24.981,
+   "rapids": true,
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Vanhankaupunginkosken koskilupa",
+     "seller": "Kalakortti.com",
+     "url": "https://www.kalakortti.com",
+     "price": "12 € kalastusvuoro, alle 18 v. 6 €",
+     "methods": [
+      "viehe"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Lohi, taimen ja siika on rauhoitettu 1.9.–30.11. Kosken yläosa on silloin kokonaan suljettu.",
+     "source": 1
+    },
+    {
+     "text": "Kahlaaminen on kielletty 1.9.–15.6.",
+     "source": 1
+    }
+   ],
+   "rules": [
+    {
+     "text": "Perhokalastus parittomina ja viehekalastus parillisina päivinä.",
+     "source": 1
+    },
+    {
+     "text": "Onginta, pilkintä sekä kalastus silloilta ja veneestä on kielletty.",
+     "source": 1
+    },
+    {
+     "text": "Enintään kolme kalaa kalastusvuoroa kohden. Alamitta lohelle ja taimenelle 60 cm.",
+     "source": 1
+    },
+    {
+     "text": "Lupa tarvitaan myös lapsille.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Helsingin kaupunki: Kalastusluvat ja hinnat",
+     "url": "https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/ulkoilu-puistot-ja-luontokohteet/kalastus/kalastusluvat-ja-hinnat"
+    },
+    {
+     "title": "Helsingin kaupunki: Kalastusmääräykset",
+     "url": "https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/ulkoilu-puistot-ja-luontokohteet/kalastus/kalastusmaaraykset"
+    }
+   ]
+  },
+  {
+   "id": "langinkoski",
+   "name": "Langinkoski",
+   "river": "Kymijoki",
+   "aliases": [
+    "kymijoki",
+    "kotka",
+    "keisarillinen kalastusmaja"
+   ],
+   "kind": "Koskialue, perhokalastus",
+   "municipality": "Kotka",
+   "lat": 60.5204,
+   "lon": 26.9144,
+   "rapids": true,
+   "only_fly": true,
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Langinkosken kalastuslupa",
+     "seller": "Eräluvat.fi (Metsähallitus)",
+     "url": "https://www.eraluvat.fi/en/areas/7581-langinkoski-84/products",
+     "price": "6 h 20 €, 12 h 25 €, vrk 35 €. Alle 18 v. puoleen hintaan.",
+     "methods": [
+      "viehe"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Kalastusaika 1.1.–30.9. ja 1.–31.12.",
+     "source": 0
+    }
+   ],
+   "rules": [
+    {
+     "text": "Vain perhokalastus perinteisillä perhovälineillä.",
+     "source": 1
+    },
+    {
+     "text": "Enintään kahdeksan kalastajaa kerrallaan.",
+     "source": 0
+    },
+    {
+     "text": "Rasvaevälliset lohet ja meritaimenet on vapautettava.",
+     "source": 1
+    }
+   ],
+   "sources": [
+    {
+     "title": "Eräluvat.fi: Langinkoski",
+     "url": "https://www.eraluvat.fi/en/areas/7581-langinkoski-84/products"
+    },
+    {
+     "title": "Luontoon.fi: Kalastus Langinkoskella",
+     "url": "https://www.luontoon.fi/en/destinations/langinkoski-nature-reserve/activities-and-trails/fishing"
+    }
+   ]
+  },
+  {
+   "id": "oulankajoki",
+   "name": "Oulankajoki",
+   "river": "Oulankajoki",
+   "aliases": [
+    "oulanka",
+    "kuusamo",
+    "kitkajoki",
+    "kansallispuisto",
+    "koillismaa"
+   ],
+   "kind": "Virtavesi, kansallispuisto",
+   "municipality": "Kuusamo",
+   "lat": 66.3756,
+   "lon": 29.3386,
+   "rapids": true,
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Oulankajoen viehekalastuslupa",
+     "seller": "Eräluvat.fi (Metsähallitus)",
+     "url": "https://www.eraluvat.fi/en/areas/5572-oulankajoki-521/products",
+     "price": "vrk 15 €, viikko 50 €. Alle 18 v. puoleen hintaan.",
+     "methods": [
+      "viehe"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Kalastusaika 1.6.–31.8.",
+     "source": 0
+    },
+    {
+     "text": "Kalastus on kielletty rauhoitusalueilla, mm. Kiutaköngäs, Taivalköngäs ja Mikonmutka. Tarkista rajat lupa-alueen kartasta.",
+     "source": 0
+    }
+   ],
+   "rules": [
+    {
+     "text": "Sallitut tavat: heitto- ja perhokalastus.",
+     "source": 0
+    },
+    {
+     "text": "Onginta ja pilkintä on kielletty virtavesissä, ja alue on käytännössä kokonaan virtavettä.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Eräluvat.fi: Oulankajoki",
+     "url": "https://www.eraluvat.fi/en/areas/5572-oulankajoki-521/products"
+    }
+   ]
+  },
+  {
+   "id": "tornionjoki",
+   "name": "Tornionjoki, Ylitornio",
+   "river": "Tornionjoki",
+   "aliases": [
+    "tornionjoki",
+    "tornio",
+    "ylitornio",
+    "lohi",
+    "lappi",
+    "muonionjoki"
+   ],
+   "kind": "Rajajoki, lohijoki",
+   "municipality": "Ylitornio",
+   "lat": 66.317,
+   "lon": 23.667,
+   "rapids": "osittain",
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Tornionjoen yhteislupa",
+     "seller": "Eräluvat.fi ja paikalliset myyjät",
+     "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno",
+     "price": "kausi 200 €, viikko 90 €, vrk 20 €. 15–17 v. puoleen hintaan, alle 15 v. ei tarvitse lupaa.",
+     "methods": [
+      "viehe"
+     ],
+     "source": 0
+    },
+    {
+     "product": "Aluekohtainen kausilupa, Ylitornio",
+     "seller": "Eräluvat.fi",
+     "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno",
+     "price": "90 €, 15–17 v. 45 €",
+     "methods": [
+      "viehe"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [
+    {
+     "text": "Lohenkalastus on sallittu vain 8.6.–25.8. Vuonna 2026 kalastus oli täysin auki 15.8. asti ja sen jälkeen rajoitettua.",
+     "source": 0
+    },
+    {
+     "text": "Lohen viikkorauhoitus sunnuntaista klo 19 maanantaihin klo 19.",
+     "source": 0
+    },
+    {
+     "text": "Yleinen kalastusaika 16.12.–14.9.",
+     "source": 0
+    }
+   ],
+   "rules": [
+    {
+     "text": "Vuonna 2026 enintään kaksi lohta kalastajaa kohden, minkä jälkeen lohenkalastus on lopetettava.",
+     "source": 0
+    },
+    {
+     "text": "Pelastusliivi on pakollinen, ja saaliista on tehtävä ilmoitus.",
+     "source": 0
+    },
+    {
+     "text": "Onginta ja pilkintä on kielletty virta- ja koskipaikoilla.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Eräluvat.fi: Tornionjoki–Muonionjoki–Könkämäeno",
+     "url": "https://eraluvat.fi/en/fishing/fishing-permits/angling-permit/alueet/tornionjoki-muonionjoki-konkamaeno"
+    }
+   ]
+  },
+  {
+   "id": "kokemaenjoki",
+   "name": "Kokemäenjoki, Kokemäki",
+   "river": "Kokemäenjoki",
+   "aliases": [
+    "kokemäenjoki",
+    "kokemäki",
+    "loimijoki",
+    "satakunta",
+    "harjavalta"
+   ],
+   "kind": "Joki, suvantojaksot",
+   "municipality": "Kokemäki",
+   "lat": 61.2583,
+   "lon": 22.35,
+   "rapids": false,
+   "nets_banned": false,
+   "permits": [
+    {
+     "product": "Monivapalupa",
+     "seller": "Kokemäen kalatalousalue (myös Kalakortti.com)",
+     "url": "https://www.kokemaenkalatalousalue.fi/kalastusluvat",
+     "price": "40 €, enintään 6 vapaa venekuntaa kohden",
+     "methods": [
+      "useampi"
+     ],
+     "source": 0
+    },
+    {
+     "product": "Verkkolupa",
+     "seller": "Kokemäen kalatalousalue (myös Kalakortti.com)",
+     "url": "https://www.kokemaenkalatalousalue.fi/kalastusluvat",
+     "price": "10 € / 30 m, enintään 4 kpl",
+     "methods": [
+      "pyydys"
+     ],
+     "source": 0
+    }
+   ],
+   "closures": [],
+   "rules": [
+    {
+     "text": "Koski- ja virta-alueilla onginta ja pilkintä on kokonaan kielletty, ja viehekalastukseen tarvitaan vesialueen omistajan lupa.",
+     "source": 1
+    },
+    {
+     "text": "Monivapaluvalla sivuperäsinten käyttö on kielletty.",
+     "source": 0
+    }
+   ],
+   "sources": [
+    {
+     "title": "Kokemäen kalatalousalue: Kalastusluvat",
+     "url": "https://www.kokemaenkalatalousalue.fi/kalastusluvat"
+    },
+    {
+     "title": "Lounais-Suomen elinvoimakeskus: Päätös koski- ja virta-alueista 29.7.2026",
+     "url": "https://kokemaki.fi/wp-content/uploads/2026/07/Paatoskuulutus-Karvianjoen-ja-Kokemaenjoen-koski-ja-virta-alueista.pdf"
+    }
+   ]
   }
  ]
 }
